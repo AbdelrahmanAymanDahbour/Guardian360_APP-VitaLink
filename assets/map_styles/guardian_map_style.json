@@ -1,0 +1,155 @@
+[
+    {
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#F8F9FA"
+            }
+        ]
+    },
+    {
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#2D2D2D"
+            }
+        ]
+    },
+    {
+        "elementType": "labels.text.stroke",
+        "stylers": [
+            {
+                "color": "#F8F9FA"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "color": "#c90101"
+            },
+            {
+                "weight": 1.2
+            }
+        ]
+    },
+    {
+        "featureType": "landscape.natural",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#f1f3f4"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "labels.text",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.medical",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#fdf0f0"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.medical",
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "hue": "#710000"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.medical",
+        "elementType": "labels.text.fill",
+        "stylers": [
+            {
+                "color": "#710000"
+            },
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "poi.government",
+        "elementType": "labels.icon",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "hue": "#540000"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "color": "#e0e0e0"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "road.highway",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "color": "#d1c4c4"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#d1d9e0"
+            }
+        ]
+    }
+]

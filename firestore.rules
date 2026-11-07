@@ -1,0 +1,1389 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============================================
+    // HELPER FUNCTIONS
+    // ============================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function hasAdminDoc() {
+      return isAuthenticated()
+        && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function adminRole() {
+      return get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role;
+    }
+
+    function isActiveAdmin() {
+      return hasAdminDoc()
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.isActive == true
+        && adminRole() in ['super_admin', 'admin', 'manager', 'dispatcher'];
+    }
+
+    function isSuperAdmin() {
+      return isActiveAdmin()
+        && adminRole() == 'super_admin';
+    }
+
+    function isAdmin() {
+      return isActiveAdmin()
+        && adminRole() in ['super_admin', 'admin'];
+    }
+
+    function isManager() {
+      return isActiveAdmin()
+        && adminRole() in ['super_admin', 'admin', 'manager'];
+    }
+
+    function isDispatcher() {
+      return isActiveAdmin()
+        && adminRole() in ['super_admin', 'admin', 'manager', 'dispatcher'];
+    }
+
+    function isAdminOrDispatcher() {
+      return isDispatcher();
+    }
+
+    function hasForbiddenUserAdminKeys(data) {
+      return data.keys().hasAny([
+        'role',
+        'roles',
+        'adminRole',
+        'dashboardRole',
+        'permissions',
+        'isAdmin',
+        'isSuperAdmin',
+        'isStaff'
+      ]);
+    }
+
+    function isSafeUserOwnerUpdate() {
+      return !request.resource.data.diff(resource.data).affectedKeys().hasAny([
+        'role',
+        'roles',
+        'adminRole',
+        'dashboardRole',
+        'permissions',
+        'isAdmin',
+        'isSuperAdmin',
+        'isStaff'
+      ]);
+    }
+
+    function isAdminSelfSessionUpdate(adminId) {
+      return isAuthenticated()
+        && request.auth.uid == adminId
+        && resource.data.isActive == true
+        && resource.data.role in ['super_admin', 'admin', 'manager', 'dispatcher']
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'lastLoginAt',
+          'lastSeenAt',
+          'updatedAt',
+          'currentSessionId'
+        ]);
+    }
+
+    function isParentAccidentOwner(accidentId) {
+      return isAuthenticated()
+        && exists(/databases/$(database)/documents/accidents/$(accidentId))
+        && get(/databases/$(database)/documents/accidents/$(accidentId)).data.userId == request.auth.uid;
+    }
+
+    function isSafeAccidentOwnerUpdate() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+        'status',
+        'updatedAt',
+        'userResponse',
+        'userResponseTime',
+        'respondedAt',
+        'cancelledByUser',
+        'cancelReason',
+        'lastClientUpdateAt'
+      ])
+      && (
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status'])
+        || request.resource.data.status in [
+          'active',
+          'cancelled_by_user',
+          'user_cancelled'
+        ]
+      );
+    }
+
+    function isSafeAlertOwnerUpdate() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+        'status',
+        'updatedAt',
+        'userResponse',
+        'userResponseTime',
+        'respondedAt',
+        'userAcknowledged',
+        'acknowledgedByUser'
+      ])
+      && (
+        !request.resource.data.diff(resource.data).affectedKeys().hasAny(['status'])
+        || request.resource.data.status in [
+          'active',
+          'false_alarm',
+          'cancelled_by_user',
+          'user_cancelled',
+          'confirmed_by_user',
+          'emergency_confirmed',
+          'dismissed'
+        ]
+      );
+    }
+
+    function isSafeArrivalStatus(status) {
+      return status in [
+        'draft',
+        'ready',
+        'tracking',
+        'paused',
+        'arrived',
+        'danger',
+        'cancelled',
+        'failed'
+      ];
+    }
+
+    function safeArrivalAllowedFields() {
+      return [
+        'id',
+        'userId',
+        'status',
+
+        'destination',
+        'destinationPlaceId',
+        'destinationName',
+        'destinationAddress',
+        'destinationLatitude',
+        'destinationLongitude',
+        'destinationLocation',
+
+        'startLatitude',
+        'startLongitude',
+        'startLocation',
+        'startLocationName',
+
+        'currentLatitude',
+        'currentLongitude',
+        'currentLocation',
+        'currentLocationName',
+
+        'endLatitude',
+        'endLongitude',
+        'endLocation',
+        'endLocationName',
+
+        'estimatedDistanceMeters',
+        'estimatedDurationSeconds',
+        'estimatedArrivalAt',
+
+        'actualDistanceMeters',
+        'distanceToDestinationMeters',
+        'arrivalRadiusMeters',
+
+        'selectedContactName',
+        'selectedContactPhone',
+        'whatsappMessage',
+        'familyNotifiedAt',
+
+        'report',
+        'safetyLevel',
+        'safetyScore',
+        'safetyRating',
+        'guardianReport',
+
+        'dangerReason',
+        'cancelReason',
+        'pauseReason',
+        'finishReason',
+
+        'createdAt',
+        'startedAt',
+        'arrivedAt',
+        'cancelledAt',
+        'dangerTriggeredAt',
+        'pausedAt',
+        'resumedAt',
+        'manualFinishedAt',
+        'lastLocationUpdatedAt',
+        'updatedAt'
+      ];
+    }
+
+    function isSafeArrivalOwnerCreate(tripId) {
+      return isAuthenticated()
+        && request.resource.data.keys().hasOnly(safeArrivalAllowedFields())
+        && request.resource.data.keys().hasAll([
+          'id',
+          'userId',
+          'status',
+          'createdAt',
+          'updatedAt'
+        ])
+        && request.resource.data.id == tripId
+        && request.resource.data.userId == request.auth.uid
+        && isSafeArrivalStatus(request.resource.data.status);
+    }
+
+    function isSafeArrivalOwnerUpdate(tripId) {
+      return isAuthenticated()
+        && resource.data.userId == request.auth.uid
+        && resource.data.id == tripId
+        && request.resource.data.id == resource.data.id
+        && request.resource.data.userId == resource.data.userId
+        && request.resource.data.keys().hasOnly(safeArrivalAllowedFields())
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(safeArrivalAllowedFields())
+        && isSafeArrivalStatus(request.resource.data.status);
+    }
+
+    function hasField(data, fieldName) {
+      return data.keys().hasAny([fieldName]);
+    }
+
+    function krokaAllowedFields() {
+      return [
+        'id',
+        'reportId',
+        'referenceCode',
+        'userId',
+        'schemaVersion',
+        'reportType',
+        'source',
+        'status',
+
+        'damagePoint',
+        'damageSide',
+        'damageZone',
+        'damageZones',
+        'damageLabelKey',
+        'damageSchemaVersion',
+
+        'faultEstimate',
+
+        'myVehiclePlate',
+        'otherVehiclePlate',
+
+        'driverLicenseSchemaVersion',
+        'driverLicenseVerifications',
+        'driverLicenseSummary',
+
+        'vehicle_data',
+
+        'location',
+        'latitude',
+        'longitude',
+        'locationAccuracyMeters',
+        'locationName',
+
+        'notes',
+
+        'evidenceSchemaVersion',
+        'evidenceItems',
+        'evidenceSummary',
+        'accident_evidence',
+
+        'generatedReport',
+        'generatedReportVersion',
+        'pdfUrl',
+        'pdfStoragePath',
+        'pdfGeneratedAtClient',
+        'pdfGeneratedAt',
+
+        'draftCreatedAtClient',
+        'draftSubmittedAt',
+        'discardedAt',
+
+        'locationCapturedAtClient',
+        'submittedAtClient',
+
+        'insuranceSignals',
+
+        'createdAt',
+        'updatedAt',
+        'submittedAt'
+      ];
+    }
+
+    function krokaRequiredFields() {
+      return [
+        'id',
+        'reportId',
+        'referenceCode',
+        'userId',
+        'schemaVersion',
+        'reportType',
+        'source',
+        'status',
+
+        'damagePoint',
+        'damageSide',
+        'damageZone',
+        'damageLabelKey',
+        'damageSchemaVersion',
+
+        'faultEstimate',
+
+        'myVehiclePlate',
+
+        'location',
+        'latitude',
+        'longitude',
+        'locationAccuracyMeters',
+
+        'evidenceSchemaVersion',
+        'evidenceItems',
+
+        'locationCapturedAtClient',
+        'submittedAtClient',
+
+        'insuranceSignals',
+
+        'createdAt',
+        'updatedAt',
+        'submittedAt'
+      ];
+    }
+
+    function krokaDamageZones() {
+      return [
+        'front',
+        'front_left',
+        'front_right',
+        'left_front_door',
+        'left_rear_door',
+        'right_front_door',
+        'right_rear_door',
+        'rear_left',
+        'rear_right',
+        'back'
+      ];
+    }
+
+    function krokaDamageSides() {
+      return ['front', 'back', 'left', 'right'];
+    }
+
+    function krokaDamageLabelKeys() {
+      return [
+        'kroka.damage.front',
+        'kroka.damage.front_left',
+        'kroka.damage.front_right',
+        'kroka.damage.left_front_door',
+        'kroka.damage.left_rear_door',
+        'kroka.damage.right_front_door',
+        'kroka.damage.right_rear_door',
+        'kroka.damage.rear_left',
+        'kroka.damage.rear_right',
+        'kroka.damage.back'
+      ];
+    }
+
+    function krokaDamageSideForZone(zone) {
+      return zone in ['front', 'front_left', 'front_right']
+        ? 'front'
+        : zone in ['back', 'rear_left', 'rear_right']
+          ? 'back'
+          : zone in ['left_front_door', 'left_rear_door']
+            ? 'left'
+            : zone in ['right_front_door', 'right_rear_door']
+              ? 'right'
+              : 'invalid';
+    }
+
+    function krokaFaultEstimates() {
+      return ['me', 'other', 'unknown'];
+    }
+
+    function krokaInsuranceSignalFields() {
+      return [
+        'locationAccuracyMeters',
+        'speedKmhAtCapture',
+        'headingDegreesAtCapture',
+        'isSpeedAvailable',
+        'isHeadingAvailable',
+        'locationCapturedAtClient',
+        'submittedAtClient',
+        'reportDelaySeconds',
+        'myVehiclePlateKey',
+        'otherVehiclePlateKey',
+        'isOtherVehiclePlateProvided',
+        'damageZone',
+        'damageZones',
+        'damageSide',
+        'damageLabelKey',
+        'evidenceSchemaVersion',
+        'evidenceCount',
+        'hasEvidence',
+        'vehicleDataPlateScanCount',
+        'vehicleDataLicenseScanCount',
+        'driverLicenseSchemaVersion',
+        'myDriverLicenseStatus',
+        'otherDriverLicenseStatus',
+        'hasMyDriverLicenseEvidence',
+        'hasOtherDriverLicenseEvidence',
+        'hasGeneratedPdfReport',
+        'generatedReportVersion'
+      ];
+    }
+
+    function krokaInsuranceSignalRequiredFields() {
+      return [
+        'locationAccuracyMeters',
+        'isSpeedAvailable',
+        'isHeadingAvailable',
+        'locationCapturedAtClient',
+        'submittedAtClient',
+        'reportDelaySeconds',
+        'myVehiclePlateKey',
+        'isOtherVehiclePlateProvided',
+        'damageZone',
+        'damageSide',
+        'damageLabelKey',
+        'evidenceSchemaVersion',
+        'evidenceCount',
+        'hasEvidence',
+        'driverLicenseSchemaVersion'
+      ];
+    }
+
+    function isOptionalStringField(data, fieldName, maxLength) {
+      return !hasField(data, fieldName)
+        || (
+          data[fieldName] is string
+          && data[fieldName].size() <= maxLength
+        );
+    }
+
+    function isOptionalMapField(data, fieldName) {
+      return !hasField(data, fieldName) || data[fieldName] is map;
+    }
+
+    function isOptionalListField(data, fieldName) {
+      return !hasField(data, fieldName) || data[fieldName] is list;
+    }
+
+    function isOptionalBoolField(data, fieldName) {
+      return !hasField(data, fieldName) || data[fieldName] is bool;
+    }
+
+    function isOptionalNumberField(data, fieldName) {
+      return !hasField(data, fieldName) || data[fieldName] is number;
+    }
+
+    function isValidOptionalKrokaDamageZones(data) {
+      return !hasField(data, 'damageZones')
+        || (
+          data.damageZones is list
+          && data.damageZones.size() > 0
+          && data.damageZones.hasOnly(krokaDamageZones())
+          && data.damageZones[0] == data.damageZone
+        );
+    }
+
+    function isValidKrokaPlate(plate) {
+      return plate is map
+        && plate.keys().hasOnly([
+          'code',
+          'number',
+          'normalizedKey',
+          'displayLabel'
+        ])
+        && plate.keys().hasAll([
+          'code',
+          'number',
+          'normalizedKey',
+          'displayLabel'
+        ])
+        && plate.code is number
+        && plate.number is number
+        && plate.code >= 0
+        && plate.code <= 99
+        && plate.number >= 1
+        && plate.number <= 99999
+        && plate.normalizedKey is string
+        && plate.normalizedKey.size() > 0
+        && plate.normalizedKey.size() <= 16
+        && plate.displayLabel is string
+        && plate.displayLabel.size() > 0
+        && plate.displayLabel.size() <= 24;
+    }
+
+    function isValidOptionalKrokaOtherPlate(data) {
+      return !hasField(data, 'otherVehiclePlate')
+        || (
+          isValidKrokaPlate(data.otherVehiclePlate)
+          && data.otherVehiclePlate.normalizedKey != data.myVehiclePlate.normalizedKey
+        );
+    }
+
+    function isValidKrokaCoordinates(data) {
+      return data.location is latlng
+        && data.latitude is number
+        && data.longitude is number
+        && data.locationAccuracyMeters is number
+        && data.latitude >= -90
+        && data.latitude <= 90
+        && data.longitude >= -180
+        && data.longitude <= 180
+        && !(data.latitude == 0 && data.longitude == 0)
+        && data.locationAccuracyMeters >= 0;
+    }
+
+    function isValidKrokaInsuranceSignals(data) {
+      return data.insuranceSignals is map
+        && data.insuranceSignals.keys().hasOnly(krokaInsuranceSignalFields())
+        && data.insuranceSignals.keys().hasAll(krokaInsuranceSignalRequiredFields())
+
+        && data.insuranceSignals.locationAccuracyMeters is number
+        && data.insuranceSignals.locationAccuracyMeters >= 0
+        && data.insuranceSignals.isSpeedAvailable is bool
+        && data.insuranceSignals.isHeadingAvailable is bool
+        && data.insuranceSignals.locationCapturedAtClient is timestamp
+        && data.insuranceSignals.submittedAtClient is timestamp
+        && data.insuranceSignals.reportDelaySeconds is number
+        && data.insuranceSignals.reportDelaySeconds >= 0
+        && data.insuranceSignals.reportDelaySeconds <= 86400
+
+        && data.insuranceSignals.myVehiclePlateKey == data.myVehiclePlate.normalizedKey
+        && data.insuranceSignals.isOtherVehiclePlateProvided == hasField(data, 'otherVehiclePlate')
+
+        && data.insuranceSignals.evidenceSchemaVersion == data.evidenceSchemaVersion
+        && data.insuranceSignals.evidenceCount is number
+        && data.insuranceSignals.evidenceCount >= 0
+        && data.insuranceSignals.hasEvidence is bool
+        && data.insuranceSignals.driverLicenseSchemaVersion == 1
+
+        && isOptionalStringField(data.insuranceSignals, 'myDriverLicenseStatus', 40)
+        && isOptionalStringField(data.insuranceSignals, 'otherDriverLicenseStatus', 40)
+        && isOptionalBoolField(data.insuranceSignals, 'hasMyDriverLicenseEvidence')
+        && isOptionalBoolField(data.insuranceSignals, 'hasOtherDriverLicenseEvidence')
+        && isOptionalBoolField(data.insuranceSignals, 'hasGeneratedPdfReport')
+        && isOptionalNumberField(data.insuranceSignals, 'generatedReportVersion')
+
+        && (
+          !hasField(data.insuranceSignals, 'speedKmhAtCapture')
+          || (
+            data.insuranceSignals.speedKmhAtCapture is number
+            && data.insuranceSignals.speedKmhAtCapture >= 0
+          )
+        )
+        && (
+          !hasField(data.insuranceSignals, 'headingDegreesAtCapture')
+          || (
+            data.insuranceSignals.headingDegreesAtCapture is number
+            && data.insuranceSignals.headingDegreesAtCapture >= 0
+            && data.insuranceSignals.headingDegreesAtCapture <= 360
+          )
+        )
+        && (
+          !hasField(data, 'otherVehiclePlate')
+          || (
+            hasField(data.insuranceSignals, 'otherVehiclePlateKey')
+            && data.insuranceSignals.otherVehiclePlateKey == data.otherVehiclePlate.normalizedKey
+          )
+        )
+        && (
+          hasField(data, 'otherVehiclePlate')
+          || !hasField(data.insuranceSignals, 'otherVehiclePlateKey')
+        )
+
+        && (
+          !hasField(data.insuranceSignals, 'damageZones')
+          || (
+            data.insuranceSignals.damageZones is list
+            && (
+              !hasField(data, 'damageZones')
+              || data.insuranceSignals.damageZones == data.damageZones
+            )
+          )
+        )
+        && (
+          !hasField(data.insuranceSignals, 'vehicleDataPlateScanCount')
+          || (
+            data.insuranceSignals.vehicleDataPlateScanCount is number
+            && data.insuranceSignals.vehicleDataPlateScanCount >= 0
+          )
+        )
+        && (
+          !hasField(data.insuranceSignals, 'vehicleDataLicenseScanCount')
+          || (
+            data.insuranceSignals.vehicleDataLicenseScanCount is number
+            && data.insuranceSignals.vehicleDataLicenseScanCount >= 0
+          )
+        )
+
+        && data.insuranceSignals.damageZone == data.damageZone
+        && data.insuranceSignals.damageSide == data.damageSide
+        && data.insuranceSignals.damageLabelKey == data.damageLabelKey;
+    }
+
+    function isValidKrokaDraftCreate(reportId) {
+      return isAuthenticated()
+        && request.resource.data.keys().hasOnly(krokaAllowedFields())
+        && request.resource.data.keys().hasAll([
+          'id',
+          'reportId',
+          'referenceCode',
+          'userId',
+          'schemaVersion',
+          'reportType',
+          'source',
+          'status',
+          'evidenceSchemaVersion',
+          'driverLicenseSchemaVersion',
+          'evidenceItems',
+          'insuranceSignals',
+          'draftCreatedAtClient',
+          'createdAt',
+          'updatedAt'
+        ])
+        && request.resource.data.id == reportId
+        && request.resource.data.reportId == reportId
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.schemaVersion == 3
+        && request.resource.data.reportType == 'minor_traffic_accident'
+        && request.resource.data.source == 'mobile_app'
+        && request.resource.data.status == 'draft'
+        && request.resource.data.referenceCode is string
+        && request.resource.data.referenceCode.size() > 0
+        && request.resource.data.referenceCode.size() <= 40
+        && request.resource.data.evidenceSchemaVersion == 2
+        && request.resource.data.driverLicenseSchemaVersion == 1
+        && request.resource.data.evidenceItems is list
+        && request.resource.data.insuranceSignals is map
+        && request.resource.data.insuranceSignals.keys().hasOnly([
+          'evidenceSchemaVersion',
+          'evidenceCount',
+          'hasEvidence'
+        ])
+        && request.resource.data.insuranceSignals.evidenceSchemaVersion == 2
+        && request.resource.data.insuranceSignals.evidenceCount == 0
+        && request.resource.data.insuranceSignals.hasEvidence == false
+        && request.resource.data.draftCreatedAtClient is timestamp
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function krokaDraftMutableFields() {
+      return [
+        'evidenceSchemaVersion',
+        'driverLicenseSchemaVersion',
+        'evidenceItems',
+        'evidenceSummary',
+        'driverLicenseVerifications',
+        'driverLicenseSummary',
+        'insuranceSignals',
+        'updatedAt'
+      ];
+    }
+
+    function krokaSubmissionMutableFields() {
+      return [
+        'status',
+
+        'damagePoint',
+        'damageSide',
+        'damageZone',
+        'damageZones',
+        'damageLabelKey',
+        'damageSchemaVersion',
+
+        'faultEstimate',
+
+        'myVehiclePlate',
+        'otherVehiclePlate',
+
+        'driverLicenseSchemaVersion',
+        'driverLicenseVerifications',
+        'driverLicenseSummary',
+
+        'vehicle_data',
+
+        'location',
+        'latitude',
+        'longitude',
+        'locationAccuracyMeters',
+        'locationName',
+
+        'notes',
+
+        'evidenceSchemaVersion',
+        'evidenceItems',
+        'evidenceSummary',
+        'accident_evidence',
+
+        'locationCapturedAtClient',
+        'submittedAtClient',
+        'submittedAt',
+        'draftSubmittedAt',
+
+        'insuranceSignals',
+        'updatedAt'
+      ];
+    }
+
+    function krokaSubmittedMutableFields() {
+      return [
+        'evidenceSchemaVersion',
+        'driverLicenseSchemaVersion',
+        'evidenceItems',
+        'evidenceSummary',
+        'driverLicenseVerifications',
+        'driverLicenseSummary',
+        'generatedReport',
+        'generatedReportVersion',
+        'pdfUrl',
+        'pdfStoragePath',
+        'pdfGeneratedAtClient',
+        'pdfGeneratedAt',
+        'insuranceSignals',
+        'updatedAt'
+      ];
+    }
+
+    function isValidKrokaStableIdentity(reportId) {
+      return request.resource.data.id == resource.data.id
+        && request.resource.data.reportId == resource.data.reportId
+        && request.resource.data.reportId == reportId
+        && request.resource.data.userId == resource.data.userId
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.referenceCode == resource.data.referenceCode
+        && request.resource.data.schemaVersion == resource.data.schemaVersion
+        && request.resource.data.reportType == resource.data.reportType
+        && request.resource.data.source == resource.data.source;
+    }
+
+    function isValidKrokaOwnerUpdate(reportId) {
+      return isAuthenticated()
+        && resource.data.userId == request.auth.uid
+        && isValidKrokaStableIdentity(reportId)
+        && request.resource.data.keys().hasOnly(krokaAllowedFields())
+        && request.resource.data.updatedAt == request.time
+        && (
+          (
+            resource.data.status == 'draft'
+            && request.resource.data.status == 'draft'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(krokaDraftMutableFields())
+          )
+          ||
+          (
+            resource.data.status == 'draft'
+            && request.resource.data.status == 'submitted'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(krokaSubmissionMutableFields())
+            && request.resource.data.keys().hasAll(krokaRequiredFields())
+            && request.resource.data.submittedAt == request.time
+            && request.resource.data.draftSubmittedAt == request.time
+            && request.resource.data.schemaVersion == 3
+            && request.resource.data.damageSchemaVersion == 2
+            && request.resource.data.evidenceSchemaVersion == 2
+            && (
+              !hasField(request.resource.data, 'driverLicenseSchemaVersion')
+              || request.resource.data.driverLicenseSchemaVersion == 1
+            )
+            && request.resource.data.damageZone in krokaDamageZones()
+            && request.resource.data.damageSide in krokaDamageSides()
+            && request.resource.data.damagePoint == request.resource.data.damageSide
+            && request.resource.data.damageSide == krokaDamageSideForZone(request.resource.data.damageZone)
+            && request.resource.data.damageLabelKey in krokaDamageLabelKeys()
+            && isValidOptionalKrokaDamageZones(request.resource.data)
+            && request.resource.data.faultEstimate in krokaFaultEstimates()
+            && isValidKrokaPlate(request.resource.data.myVehiclePlate)
+            && isValidOptionalKrokaOtherPlate(request.resource.data)
+            && isValidKrokaCoordinates(request.resource.data)
+            && isOptionalStringField(request.resource.data, 'locationName', 180)
+            && isOptionalStringField(request.resource.data, 'notes', 500)
+            && isOptionalListField(request.resource.data, 'evidenceItems')
+            && isOptionalMapField(request.resource.data, 'evidenceSummary')
+            && isOptionalMapField(request.resource.data, 'driverLicenseVerifications')
+            && isOptionalMapField(request.resource.data, 'driverLicenseSummary')
+            && isOptionalMapField(request.resource.data, 'vehicle_data')
+            && isOptionalMapField(request.resource.data, 'accident_evidence')
+            && request.resource.data.locationCapturedAtClient is timestamp
+            && request.resource.data.submittedAtClient is timestamp
+            && isValidKrokaInsuranceSignals(request.resource.data)
+          )
+          ||
+          (
+            resource.data.status == 'submitted'
+            && request.resource.data.status == 'submitted'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly(krokaSubmittedMutableFields())
+          )
+          ||
+          (
+            resource.data.status == 'draft'
+            && request.resource.data.status == 'discarded'
+            && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+              'status',
+              'discardedAt',
+              'updatedAt'
+            ])
+            && request.resource.data.discardedAt == request.time
+          )
+        );
+    }
+
+    function isValidKrokaOwnerCreate(reportId) {
+      return isAuthenticated()
+        && request.resource.data.keys().hasOnly(krokaAllowedFields())
+        && request.resource.data.keys().hasAll(krokaRequiredFields())
+
+        && request.resource.data.id == reportId
+        && request.resource.data.reportId == reportId
+        && request.resource.data.userId == request.auth.uid
+
+        && request.resource.data.schemaVersion == 3
+        && request.resource.data.damageSchemaVersion == 2
+        && request.resource.data.reportType == 'minor_traffic_accident'
+        && request.resource.data.source == 'mobile_app'
+        && request.resource.data.status == 'submitted'
+
+        && request.resource.data.referenceCode is string
+        && request.resource.data.referenceCode.size() > 0
+        && request.resource.data.referenceCode.size() <= 40
+
+        && request.resource.data.damageZone in krokaDamageZones()
+        && request.resource.data.damageSide in krokaDamageSides()
+        && request.resource.data.damagePoint == request.resource.data.damageSide
+        && request.resource.data.damageSide == krokaDamageSideForZone(request.resource.data.damageZone)
+        && request.resource.data.damageLabelKey in krokaDamageLabelKeys()
+        && isValidOptionalKrokaDamageZones(request.resource.data)
+
+        && request.resource.data.faultEstimate in krokaFaultEstimates()
+
+        && isValidKrokaPlate(request.resource.data.myVehiclePlate)
+        && isValidOptionalKrokaOtherPlate(request.resource.data)
+
+        && isValidKrokaCoordinates(request.resource.data)
+
+        && isOptionalStringField(request.resource.data, 'locationName', 180)
+        && isOptionalStringField(request.resource.data, 'notes', 500)
+
+        && request.resource.data.evidenceSchemaVersion == 2
+        && (
+          !hasField(request.resource.data, 'driverLicenseSchemaVersion')
+          || request.resource.data.driverLicenseSchemaVersion == 1
+        )
+        && isOptionalListField(request.resource.data, 'evidenceItems')
+        && isOptionalMapField(request.resource.data, 'evidenceSummary')
+        && isOptionalMapField(request.resource.data, 'driverLicenseVerifications')
+        && isOptionalMapField(request.resource.data, 'driverLicenseSummary')
+        && isOptionalMapField(request.resource.data, 'vehicle_data')
+        && isOptionalMapField(request.resource.data, 'accident_evidence')
+
+        && request.resource.data.locationCapturedAtClient is timestamp
+        && request.resource.data.submittedAtClient is timestamp
+
+        && isValidKrokaInsuranceSignals(request.resource.data)
+
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time
+        && request.resource.data.submittedAt == request.time;
+    }
+
+
+    // ============================================
+    // USERS COLLECTION
+    // users/{userId}
+    // ============================================
+
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow read: if isAdminOrDispatcher();
+
+      allow create: if isOwner(userId)
+        && !hasForbiddenUserAdminKeys(request.resource.data);
+      allow update: if isOwner(userId)
+        && isSafeUserOwnerUpdate();
+
+      allow delete: if false;
+    }
+
+    // ============================================
+    // USER IN-APP NOTIFICATIONS
+    // users/{userId}/notifications/{notificationId}
+    // ============================================
+
+    match /users/{userId}/notifications/{notificationId} {
+      allow read: if isOwner(userId);
+      allow read: if isAdminOrDispatcher();
+
+      allow create: if isOwner(userId)
+        && request.resource.data.keys().hasOnly([
+          'type',
+          'titleAr',
+          'titleEn',
+          'bodyAr',
+          'bodyEn',
+          'isRead',
+          'priority',
+          'source',
+          'relatedAccidentId',
+          'payload',
+          'createdAt',
+          'updatedAt',
+          'readAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'type',
+          'titleAr',
+          'titleEn',
+          'bodyAr',
+          'bodyEn',
+          'isRead',
+          'priority',
+          'source',
+          'payload',
+          'createdAt',
+          'updatedAt'
+        ])
+        && request.resource.data.isRead == false
+        && request.resource.data.type in [
+          'offline_sync_success',
+          'battery_low',
+          'system_notice',
+
+          'accident_pre_alert',
+          'emergency_report_sent',
+          'status_change',
+          'incident_status_change',
+
+          'safe_arrival_started',
+          'safe_arrival_paused',
+          'safe_arrival_resumed',
+          'safe_arrival_near_destination',
+          'safe_arrival_arrived',
+          'safe_arrival_cancelled',
+          'safe_arrival_danger',
+
+          'kroka_report_saved'
+        ]
+        && request.resource.data.priority in [
+          'low',
+          'normal',
+          'high',
+          'critical'
+        ];
+      allow create: if isAdminOrDispatcher()
+        && request.resource.data.keys().hasOnly([
+          'type',
+          'titleAr',
+          'titleEn',
+          'bodyAr',
+          'bodyEn',
+          'isRead',
+          'priority',
+          'source',
+          'relatedAccidentId',
+          'payload',
+          'createdAt',
+          'updatedAt',
+          'readAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'type',
+          'titleAr',
+          'titleEn',
+          'bodyAr',
+          'bodyEn',
+          'isRead',
+          'priority',
+          'source',
+          'payload',
+          'createdAt',
+          'updatedAt'
+        ])
+        && request.resource.data.isRead == false
+        && request.resource.data.type in [
+          'system_notice',
+          'status_change',
+          'incident_status_change',
+          'emergency_report_sent',
+
+          'safe_arrival_started',
+          'safe_arrival_paused',
+          'safe_arrival_resumed',
+          'safe_arrival_near_destination',
+          'safe_arrival_arrived',
+          'safe_arrival_cancelled',
+          'safe_arrival_danger'
+        ]
+        && request.resource.data.priority in [
+          'low',
+          'normal',
+          'high',
+          'critical'
+        ];
+      allow update: if isOwner(userId)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'isRead',
+          'readAt',
+          'updatedAt'
+        ]);
+      allow delete: if isOwner(userId);
+    }
+
+    // ============================================
+    // ACCIDENTS COLLECTION
+    // accidents/{accidentId}
+    // ============================================
+
+    match /accidents/{accidentId} {
+      allow create: if isAuthenticated()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.keys().hasAll([
+          'userId',
+          'status',
+          'latitude',
+          'longitude'
+        ])
+        && request.resource.data.keys().hasAny([
+          'timestamp',
+          'createdAt'
+        ]);
+      allow read: if isAuthenticated()
+        && resource.data.userId == request.auth.uid;
+
+      allow read: if isAdminOrDispatcher();
+      allow update: if isAuthenticated()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId
+        && isSafeAccidentOwnerUpdate();
+      allow update: if isAdminOrDispatcher();
+
+      allow delete: if isSuperAdmin();
+
+      match /statusHistory/{historyId} {
+        allow read: if isAdminOrDispatcher();
+        allow read: if isParentAccidentOwner(accidentId);
+
+        allow create: if isAdminOrDispatcher()
+          && request.resource.data.keys().hasOnly([
+            'status',
+            'oldStatus',
+            'newStatus',
+            'timestamp',
+            'updatedBy',
+            'updatedByAdminId',
+            'updatedByEmail',
+            'updatedByRole',
+            'sessionId',
+            'notes',
+            'createdAt'
+          ])
+          && request.resource.data.keys().hasAll([
+            'status',
+            'timestamp',
+            'updatedBy'
+          ]);
+        allow update, delete: if false;
+      }
+    }
+
+    // ============================================
+    // ALERTS COLLECTION
+    // alerts/{alertId}
+    // ============================================
+
+    match /alerts/{alertId} {
+      allow create: if isAuthenticated()
+        && request.resource.data.userId == request.auth.uid;
+      allow create: if isAdminOrDispatcher();
+
+      allow read: if isAuthenticated()
+        && resource.data.userId == request.auth.uid;
+      allow read: if isAdminOrDispatcher();
+
+      allow update: if isAuthenticated()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId
+        && isSafeAlertOwnerUpdate();
+      allow update: if isAdminOrDispatcher()
+        && (request.resource.data.status != 'false_alarm' || resource.data.status == 'false_alarm' || isSuperAdmin());
+
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // TRIPS COLLECTION
+    // trips/{tripId}
+    // ============================================
+
+    match /trips/{tripId} {
+      allow create: if isAuthenticated()
+        && request.resource.data.userId == request.auth.uid;
+      allow read: if isAuthenticated()
+        && resource.data.userId == request.auth.uid;
+
+      allow read: if isAdminOrDispatcher();
+      allow update: if isAuthenticated()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId;
+      allow update: if isAdminOrDispatcher();
+
+      allow delete: if isAuthenticated()
+        && resource.data.userId == request.auth.uid
+        && resource.data.status in ['completed', 'cancelled'];
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // SAFE ARRIVAL TRIPS COLLECTION
+    // safe_arrival_trips/{tripId}
+    // ============================================
+
+    match /safe_arrival_trips/{tripId} {
+      // Mobile user creates a Safe Arrival trip for themselves only.
+      allow create: if isSafeArrivalOwnerCreate(tripId);
+
+      // User reads own Safe Arrival trips.
+      allow read: if isAuthenticated()
+        && resource.data.userId == request.auth.uid;
+
+      // 🔥 Dashboard can read ALL Safe Arrival trips for operational and analytics history.
+      allow read: if isAdminOrDispatcher();
+
+      // Mobile owner updates only allowed Safe Arrival lifecycle/location fields.
+      allow update: if isSafeArrivalOwnerUpdate(tripId);
+
+      // No hard delete from clients.
+      allow delete: if false;
+    }
+
+    // ============================================
+    // KROKA REPORTS COLLECTION
+    // kroka_reports/{reportId}
+    // ============================================
+
+    match /kroka_reports/{reportId} {
+      allow create: if isValidKrokaDraftCreate(reportId)
+        || isValidKrokaOwnerCreate(reportId);
+      allow read: if isAuthenticated()
+        && resource.data.userId == request.auth.uid;
+
+      allow read: if isAdminOrDispatcher();
+      allow update: if isValidKrokaOwnerUpdate(reportId);
+
+      allow delete: if false;
+    }
+
+    // ============================================
+    // LEGACY / GENERAL NOTIFICATIONS
+    // notifications/{notificationId}
+    // ============================================
+
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated()
+        && resource.data.userId == request.auth.uid;
+      allow read: if isAdminOrDispatcher();
+
+      allow create: if isAdminOrDispatcher();
+
+      allow update: if isAuthenticated()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'read',
+          'isRead',
+          'readAt',
+          'updatedAt'
+        ]);
+      allow delete: if isAuthenticated()
+        && resource.data.userId == request.auth.uid;
+    }
+
+    // ============================================
+    // EMERGENCY CONTACTS
+    // users/{userId}/emergencyContacts/{contactId}
+    // ============================================
+
+    match /users/{userId}/emergencyContacts/{contactId} {
+      allow read: if isOwner(userId);
+      allow read: if isAdminOrDispatcher();
+
+      allow create, update, delete: if isOwner(userId);
+    }
+
+    // ============================================
+    // EMERGENCY DIRECTORY
+    // emergency_directory/{contactId}
+    // ============================================
+
+    match /emergency_directory/{contactId} {
+      allow read: if isAdminOrDispatcher();
+      allow create, update: if isManager();
+
+      allow delete: if false;
+    }
+
+    // ============================================
+    // EMERGENCY FACILITIES (المرافق الطبية والشرطة)
+    // emergency_facilities/{facilityId}
+    // ============================================
+
+    match /emergency_facilities/{facilityId} {
+      allow read: if isAdminOrDispatcher();
+      allow create, update, delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // MEDICAL HISTORY
+    // users/{userId}/medicalHistory/{recordId}
+    // ============================================
+
+    match /users/{userId}/medicalHistory/{recordId} {
+      allow read: if isOwner(userId);
+      allow read: if isAdminOrDispatcher();
+
+      allow create, update, delete: if isOwner(userId);
+    }
+
+    // ============================================
+    // ADMINS COLLECTION
+    // admins/{adminId}
+    // ============================================
+
+    match /admins/{adminId} {
+      allow create: if isSuperAdmin();
+      allow read: if isAuthenticated()
+        && request.auth.uid == adminId;
+
+      allow read: if isSuperAdmin();
+      allow update: if isSuperAdmin();
+
+      allow update: if isAdminSelfSessionUpdate(adminId);
+
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // ADMIN SESSIONS
+    // admin_sessions/{sessionId}
+    // ============================================
+
+    match /admin_sessions/{sessionId} {
+      allow create: if isActiveAdmin()
+        && request.resource.data.adminId == request.auth.uid
+        && request.resource.data.adminRole == adminRole();
+      allow read: if isSuperAdmin();
+
+      allow read: if isAuthenticated()
+        && resource.data.adminId == request.auth.uid;
+      allow update: if isAuthenticated()
+        && resource.data.adminId == request.auth.uid
+        && request.resource.data.adminId == resource.data.adminId
+        && request.resource.data.adminRole == resource.data.adminRole
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'lastSeenAt',
+          'endedAt',
+          'isActive',
+          'logoutReason',
+          'updatedAt'
+        ]);
+
+      allow update: if isSuperAdmin();
+
+      allow delete: if false;
+    }
+
+    // ============================================
+    // ACTIVITY LOGS
+    // activity_logs/{logId}
+    // ============================================
+
+    match /activity_logs/{logId} {
+      allow read: if isManager();
+      allow create: if isAdminOrDispatcher();
+
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // SYSTEM LOGS
+    // systemLogs/{logId}
+    // ============================================
+
+    match /systemLogs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // SYSTEM SETTINGS
+    // systemSettings/{settingId}
+    // ============================================
+
+    match /systemSettings/{settingId} {
+      allow read: if isAdminOrDispatcher();
+      allow read: if isAuthenticated()
+        && settingId == 'mobileConfig';
+
+      allow write: if isSuperAdmin();
+    }
+
+    // ============================================
+    // PUBLIC SYSTEM STATUS
+    // publicStatus/firestore
+    // ============================================
+
+    match /publicStatus/{docId} {
+      allow read: if docId == 'firestore';
+      allow write: if false;
+    }
+
+    // ============================================
+    // FUTURE SECURITY COLLECTIONS
+    // ============================================
+
+    match /login_attempts/{attemptId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /security_alerts/{alertId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    match /system_admin/{alertId} {
+      allow read: if isAdmin();
+      allow write: if false;
+    }
+
+    // ============================================
+    // VEHICLE IOT MONITORING
+    // vehicle_units / vehicle_iot_events
+    // ============================================
+
+    match /vehicle_units/{deviceId} {
+      allow read: if isAdminOrDispatcher();
+      allow write: if false;
+    }
+
+    match /vehicle_iot_events/{eventId} {
+      allow read: if isAdminOrDispatcher();
+      allow write: if false;
+    }
+
+    // ============================================
+    // DEFAULT DENY ALL
+    // ============================================
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
