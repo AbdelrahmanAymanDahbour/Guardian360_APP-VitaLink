@@ -1,0 +1,1513 @@
+{
+  "app_name": "Guardian 360",
+  "common": {
+    "processing": "Processing...",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "retry": "Retry",
+    "loading": "Loading...",
+    "success": "Operation completed successfully",
+    "error": "An error occurred",
+    "back": "Back",
+    "ok": "OK",
+    "or": "or"
+  },
+  "greetings": {
+    "morning": "Good morning,",
+    "afternoon": "Good afternoon,",
+    "evening": "Good evening,",
+    "night": "Good evening,"
+  },
+  "home": {
+    "title": "Guardian 360",
+    "status_safe": "System is safe and active",
+    "status_ready": "System Ready",
+    "status_initializing": "Initializing System",
+    "status_subtitle_safe": "All sensors are working efficiently",
+    "status_subtitle_ready": "You can enable protection and start your trip",
+    "status_subtitle_initializing": "Checking smart modules...",
+    "sos_button": "SOS",
+    "sos_subtitle": "Tap for assistance",
+    "card_kroka": "Smart Kroka",
+    "card_contacts": "Contacts",
+    "card_safe_arrival": "Safe Arrival",
+    "medical_incomplete_title": "Medical Record Incomplete",
+    "medical_incomplete_body": "Completing your medical record helps rescue teams know your blood type, allergies, medications, and chronic conditions. You can complete it now, or send an SOS immediately if this is an emergency.",
+    "send_sos_now": "Send SOS Now",
+    "complete_medical": "Complete Medical Record",
+    "medical_required_title": "Medical Record Required",
+    "medical_required_fallback": "You must complete the medical record before using protection or trips.",
+    "later": "Later",
+    "status_medical_required_title": "Medical Record Required",
+    "status_medical_required_subtitle": "Complete your medical data to activate the protection system",
+    "status_accident_detected_title": "Possible Accident Detected",
+    "status_accident_critical": "A critical accident was detected. Emergency protocols are being activated immediately.",
+    "status_accident_high": "A serious accident was detected. Alert and response are being prepared.",
+    "status_accident_medium": "A moderate accident was detected. Verifying current situation.",
+    "status_accident_low": "A low-severity event was detected. Monitoring continues.",
+    "status_active_monitoring_title": "System Safe & Active",
+    "status_active_monitoring_subtitle": "Smart monitoring and advanced analysis are running efficiently",
+    "status_activating_title": "Activating Monitoring",
+    "status_activating_subtitle": "Launching the advanced detection and analysis system",
+    "status_protection_on_title": "Protection Enabled",
+    "status_protection_on_subtitle": "Start your trip to activate smart monitoring",
+    "status_default_title": "System Ready",
+    "status_default_subtitle": "You can enable protection and start your trip",
+    "status_trip_no_protection_title": "Trip Active Without Protection",
+    "status_trip_no_protection_subtitle": "You can re-enable protection at any time",
+    "status_system_off_title": "System Inactive",
+    "status_system_off_subtitle": "Enable protection to start smart monitoring",
+    "status_trip_ended_title": "Protection Enabled",
+    "status_trip_ended_subtitle": "Trip ended. You can start a new trip.",
+    "status_init_failed_title": "System Initialization Failed",
+    "status_init_failed_subtitle": "An error occurred while preparing the home screen",
+    "status_countdown_finished_title": "Emergency Countdown Ended",
+    "status_countdown_finished_subtitle": "The event has been forwarded to the emergency screen to complete sending the official report.",
+    "status_cancelled_title": "Emergency Cancelled",
+    "status_cancelled_subtitle": "The system has returned to smart monitoring mode",
+    "status_no_session_message": "Cannot verify medical readiness without a valid user session.",
+    "status_medical_timeout_message": "Could not verify medical record at this time. Please try again before enabling protection.",
+    "status_medical_error_message": "Could not verify medical record. Please complete it before using protection.",
+    "status_medical_required_gate_message": "You must complete the medical record before enabling protection or starting a trip.",
+    "status_medical_required_action_message": "Complete your medical data first to activate the protection system properly.",
+    "btn_protection_enable": "Enable Protection",
+    "btn_protection_disable": "Disable Protection",
+    "btn_trip_start": "Start Trip",
+    "btn_trip_end": "End Trip"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "subtitle": "Guardian 360 alert center",
+    "summary": {
+      "unread_one": "{count} unread notification",
+      "unread_many": "{count} unread notifications",
+      "all_read": "All notifications are read",
+      "empty": "No notifications yet",
+      "active_body": "Follow Safe Arrival, emergency, and system alerts in one organized center.",
+      "empty_body": "Safe Arrival updates, emergency reports, battery alerts, and important sync updates will appear here automatically.",
+      "total_chip": "{count} total",
+      "unread_chip": "{count} unread",
+      "synced": "Synced"
+    },
+    "actions": {
+      "read_all": "Read all",
+      "retry": "Retry",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "done": "Done"
+    },
+    "fallback_title": "New notification",
+    "empty": {
+      "title": "No notifications",
+      "body": "Safe Arrival updates, sent reports, battery alerts, and important Guardian 360 sync updates will appear here."
+    },
+    "filtered_empty": {
+      "title": "No notifications in this filter",
+      "body": "Try another filter or pull down to refresh."
+    },
+    "error": {
+      "title": "Failed to load notifications",
+      "body": "Check your connection or Firestore permissions, then try again."
+    },
+    "dates": {
+      "today": "Today",
+      "yesterday": "Yesterday"
+    },
+    "relative": {
+      "just_now": "Just now",
+      "minutes_ago": "{count} min ago",
+      "hours_ago": "{count} hr ago",
+      "days_ago_one": "{count} day ago",
+      "days_ago_many": "{count} days ago"
+    },
+    "filters": {
+      "all": "All",
+      "unread": "Unread",
+      "safe_arrival": "Safe Arrival",
+      "emergency": "Emergency",
+      "kroka": "Kroka",
+      "system": "System"
+    },
+    "priority": {
+      "critical": "Critical",
+      "high": "High",
+      "low": "Low"
+    },
+    "types": {
+      "sync": "Sync",
+      "battery": "Battery",
+      "accident_alert": "Accident alert",
+      "emergency": "Emergency",
+      "system": "System",
+      "status_update": "Status update",
+      "safe_arrival_started": "Safe Arrival started",
+      "safe_arrival_paused": "Paused",
+      "safe_arrival_resumed": "Resumed",
+      "safe_arrival_near_destination": "Near destination",
+      "safe_arrival_arrived": "Arrived safely",
+      "safe_arrival_cancelled": "Safe Arrival cancelled",
+      "safe_arrival_danger": "Safe Arrival risk alert",
+      "safe_arrival": "Safe Arrival",
+      "kroka_report_saved": "Kroka report",
+      "notification": "Notification"
+    },
+    "delete_dialog": {
+      "title": "Delete notification?",
+      "body": "This only removes it from the notification center and will not affect official reports or Safe Arrival trips."
+    },
+    "details": {
+      "title": "Notification details",
+      "linked_accident": "Linked to an official emergency report in the database.",
+      "linked_safe_arrival_destination": "Linked to a Safe Arrival trip to {destination}.",
+      "linked_safe_arrival_saved": "Linked to a saved Safe Arrival trip in the database.",
+      "linked_kroka_report_reference": "Linked to a saved Kroka report in Guardian 360 with reference: {reference}.",
+      "linked_kroka_report_saved": "Linked to a saved Kroka report in Guardian 360."
+    },
+    "app_title": "Guardian 360",
+    "accident_detected": "Possible accident detected",
+    "sos_triggered": "Emergency system activated",
+    "trip_started": "Your trip started - we are monitoring your safety",
+    "trip_ended": "Your trip ended safely"
+  },
+  "medical": {
+    "title": "Emergency Medical Record",
+    "actions": {
+      "close": "Close",
+      "unlock_record": "Unlock record",
+      "use_device_auth": "Use authentication",
+      "save_record": "Save",
+      "saving": "Saving...",
+      "encrypt_and_save": "Encrypt and save"
+    },
+    "locked": {
+      "title": "Record securely locked",
+      "body": "Sensitive data for rescue only. Device authentication will appear based on your settings."
+    },
+    "sections": {
+      "basic": {
+        "title": "Basic information",
+        "subtitle": "Essential for identification and first response"
+      },
+      "vitals": {
+        "title": "Vital information",
+        "subtitle": "Important for rescue and initial medical handling"
+      },
+      "critical": {
+        "title": "Critical medical information",
+        "subtitle": "Helps responders handle special medical conditions quickly and safely"
+      }
+    },
+    "fields": {
+      "full_name": {
+        "label": "Full name",
+        "hint": "As shown on ID",
+        "helper": ""
+      },
+      "national_id": {
+        "label": "National ID",
+        "hint": "Enter the national ID number",
+        "helper": ""
+      },
+      "age": {
+        "label": "Age",
+        "hint": "Enter the current age or date of birth; the age can be calculated automatically",
+        "auto_hint": "Calculated automatically",
+        "helper": "",
+        "auto_helper": ""
+      },
+      "address": {
+        "label": "Address",
+        "hint": "Enter the current residence or permanent address",
+        "helper": ""
+      },
+      "weight": {
+        "label": "Weight",
+        "hint": "Enter body weight in kilograms",
+        "helper": "",
+        "suffix": "kg"
+      },
+      "height": {
+        "label": "Height",
+        "hint": "Enter body height in centimeters",
+        "helper": "",
+        "suffix": "cm"
+      },
+      "gender": {
+        "label": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "helper": ""
+      },
+      "allergies": {
+        "label": "Allergies",
+        "hint": "List known allergies, or write: None",
+        "helper": ""
+      },
+      "medications": {
+        "label": "Current medications",
+        "hint": "List regular medications, or write: None",
+        "helper": ""
+      },
+      "chronic_diseases": {
+        "label": "Chronic diseases",
+        "hint": "List chronic diseases, or write: None",
+        "helper": ""
+      },
+      "notes": {
+        "label": "Additional notes",
+        "hint": "Add any information that may help responders, such as special medical conditions or specific instructions.",
+        "helper": ""
+      },
+      "date_of_birth": {
+        "label": "Date of birth",
+        "hint": "Select date of birth",
+        "helper": "",
+        "clear": "Clear"
+      },
+      "blood_type": {
+        "label": "Blood type",
+        "hint": "Select the correct blood type",
+        "helper": "",
+        "sheet_title": "Select blood type",
+        "sheet_subtitle": "Choose the correct blood type from the list"
+      },
+      "organ_donor": {
+        "label": "Organ donor",
+        "helper": ""
+      }
+    },
+    "date_picker": {
+      "help": "Select date of birth"
+    },
+    "security": {
+      "banner": "The emergency medical record is protected by high security standards. Only authorized responders should access it during emergencies.",
+      "unlocking": "Unlocking the emergency medical record using {method}...",
+      "unlock_success": "Emergency medical record unlocked successfully",
+      "unlock_failed": "Failed to unlock the emergency medical record. Check device security settings or try another method."
+    },
+    "completion": {
+      "ready_title": "Ready for emergencies",
+      "required_title": "Critical information required",
+      "ready_body": "Required fields are complete",
+      "required_body": "Complete the critical fields to enable protection"
+    },
+    "messages": {
+      "save_success": "Saved successfully"
+    },
+    "validation": {
+      "full_name_invalid": "Name is invalid",
+      "national_id_invalid": "Must be {length} digits",
+      "blood_type_required": "Select a valid blood type",
+      "age_invalid": "Age is unrealistic",
+      "birth_date_invalid": "Date is unrealistic",
+      "weight_invalid": "Value is unrealistic",
+      "height_invalid": "Value is unrealistic",
+      "address_invalid": "Address is invalid",
+      "allergies_required": "Fill allergies or write: None",
+      "allergies_invalid": "Value is invalid",
+      "medications_required": "Fill medications or write: None",
+      "medications_invalid": "Value is invalid",
+      "chronic_diseases_required": "Fill diseases or write: None",
+      "chronic_diseases_invalid": "Value is invalid",
+      "notes_invalid": "Notes are too long",
+      "gender_required": "Select gender"
+    },
+    "errors": {
+      "save_failed": "Save failed",
+      "init_failed": "Initialization failed",
+      "auth_failed": "Authentication failed",
+      "load_failed": "Load failed",
+      "user_not_signed_in": "User not signed in",
+      "cloud_update_failed_local_saved": "Saved locally, cloud update failed",
+      "save_exception": "Error while saving"
+    }
+  },
+  "safe_arrival": {
+    "title": "Safe Arrival",
+    "setup_info": "Set your destination and expected arrival time. If you do not confirm arrival on time, Guardian 360 will activate the alert and notify your emergency contacts automatically.",
+    "destination_label": "Where are you heading?",
+    "destination_hint": "Enter the address or place you are heading to",
+    "duration_label": "Expected arrival time (in minutes)",
+    "duration_hint": "Enter the estimated travel time to the destination",
+    "btn_start_tracking": "Start secure trip tracking",
+    "heading_to": "Heading to:",
+    "time_remaining": "Time remaining to arrival",
+    "btn_cancel_trip": "Cancel Trip",
+    "btn_confirm_arrival": "Confirm Safe Arrival",
+    "arrived_title": "You arrived safely!",
+    "arrived_subtitle": "Successfully arrived at {destination}",
+    "route_start": "Starting Point",
+    "route_end": "Destination",
+    "stat_time": "Time taken",
+    "stat_distance": "Distance covered",
+    "stat_rating": "Safety rating",
+    "ai_report_title": "Guardian AI Report",
+    "ai_report_text": "Smart trip report for {destination}, including route, speed, and stop analysis to help review the trip conditions.",
+    "btn_notify_family": "Notify emergency contact (WhatsApp)",
+    "danger_title": "Allowed trip time has expired",
+    "danger_subtitle": "Arrival was not confirmed.\nEmergency protocol has been activated and emergency contacts have been notified.",
+    "btn_im_safe": "Cancel Alert (I'm Safe)",
+    "route_title": "Trip Route",
+    "route_subtitle": "Displays your current location and selected destination.",
+    "setup_subtitle": "Choose your destination, and Guardian 360 will track your trip until you arrive safely.",
+    "checking_active_trips": "Checking active trips...",
+    "destination": "Destination",
+    "destination_subtitle": "Select the destination from results to ensure location accuracy.",
+    "search_hint": "Search for university, city, hospital, or area...",
+    "clear": "Clear",
+    "searching_destinations": "Searching destinations...",
+    "resolving_destination": "Resolving destination...",
+    "preparing_route": "Preparing trip details...",
+    "refresh_route": "Refresh Trip Details",
+    "route_details_title": "Trip Details",
+    "route_details_subtitle": "Time and distance will update during tracking.",
+    "distance": "Distance",
+    "estimated_time": "Estimated Time",
+    "start_tracking": "Start Safe Tracking",
+    "choose_destination_first": "Choose your destination first",
+    "prepare_route": "Prepare Trip Details",
+    "preparing": "Preparing...",
+    "tracking_paused": "Tracking Paused",
+    "live_tracking": "Live Tracking",
+    "can_resume_tracking": "You can resume tracking when ready.",
+    "tracking_updates_automatically": "Location and arrival time update automatically.",
+    "distance_remaining": "Remaining Distance",
+    "speed": "Speed",
+    "gps_accuracy": "GPS Accuracy",
+    "selected_destination": "Selected Destination",
+    "destination_prefix": "Destination:",
+    "resume_tracking": "Resume Tracking",
+    "pause_tracking": "Pause",
+    "cancel_trip": "Cancel Trip",
+    "finish_trip": "Finish Trip",
+    "finish_when_approaching": "Finish When Approaching",
+    "arrived_at": "Arrived at",
+    "opening_whatsapp": "Opening WhatsApp...",
+    "start_point": "Start Point",
+    "duration": "Duration",
+    "last_known_location": "Last Known Location",
+    "last_recorded_location": "Last location recorded during trip.",
+    "map_will_appear": "Map will appear after selecting a destination.",
+    "live": "Live",
+    "current_location": "Current Location",
+    "confirmed": "Safe arrival confirmed",
+    "notification_sent": "Safe-arrival notification sent",
+    "timeout": "The user did not reach the destination within the expected time"
+  },
+  "kroka": {
+    "title": "Smart Kroka",
+    "subtitle": "Smart traffic accident report inside Guardian 360",
+    "location_fetching": "Detecting accident location...",
+    "location_confirmed": "Accident location captured ({location})",
+    "section_damage": "Select the damage location on your vehicle accurately",
+    "damage_front": "Front",
+    "damage_back": "Back",
+    "damage_left": "Left",
+    "damage_right": "Right",
+    "section_fault": "Liability estimate",
+    "fault_me": "Me",
+    "fault_other": "Other party",
+    "fault_unknown": "Not sure",
+    "section_vehicles": "Vehicle details involved in the accident",
+    "vehicle_mine": "My vehicle",
+    "vehicle_other": "Other vehicle",
+    "plate_number": "Number",
+    "plate_code": "Code",
+    "section_evidence": "Report evidence",
+    "evidence_encrypted": "Evidence saved with the report",
+    "btn_camera": "Add damage photos",
+    "btn_camera_done": "Photo added",
+    "camera_opening": "Evidence documentation is not enabled yet.",
+    "btn_voice": "Add voice recording",
+    "notes_hint": "Enter a short factual description of the accident circumstances and the condition of the involved parties.",
+    "btn_submit": "Create Smart Accident Report",
+    "error_validation": "Please complete the required report details.",
+    "success_title": "Accident report saved",
+    "success_subtitle": "An internal Guardian 360 report has been created with a reference number for review or sharing when needed.",
+    "btn_back_home": "Back to Home",
+    "location": {
+      "title": "Accident location",
+      "fetching": "Detecting location...",
+      "ready": "Location captured",
+      "unavailable": "Location unavailable",
+      "waiting_body": "A real device location is required before saving the report.",
+      "accuracy_value": "{meters} m accuracy"
+    },
+    "damage": {
+      "title": "Damage location",
+      "subtitle": "Select the closest damaged vehicle area to help create a more accurate report for review and insurance.",
+      "front": "Front",
+      "front_left": "Front left",
+      "front_right": "Front right",
+      "left": "Left",
+      "left_front_door": "Left front door",
+      "left_rear_door": "Left rear door",
+      "right": "Right",
+      "right_front_door": "Right front door",
+      "right_rear_door": "Right rear door",
+      "rear_left": "Rear left",
+      "rear_right": "Rear right",
+      "back": "Back",
+      "not_selected": "Not selected",
+      "selected_value": "Currently selected: {value}"
+    },
+    "fault": {
+      "title": "Liability estimate",
+      "helper": "This user-provided estimate helps organize the report and is not an official decision.",
+      "me": "Me",
+      "other": "Other party",
+      "unknown": "Not sure"
+    },
+    "vehicles": {
+      "title": "Vehicle details",
+      "helper": "Enter the plate code and number as shown on the Jordanian vehicle plate.",
+      "mine": "My vehicle",
+      "other": "Other vehicle",
+      "required": "Required",
+      "optional": "Optional",
+      "plate_country": "JORDAN",
+      "plate_number": "Number",
+      "plate_code": "Code",
+      "scan_plate": "Scan plate with AI",
+      "scanning_plate": "Reading plate...",
+      "ocr_filled": "Auto-filled",
+      "scan_helper": "Take a clear photo of the plate or choose a close-up image.",
+      "ocr_camera_filled": "Filled from live camera",
+      "ocr_gallery_filled": "Filled from gallery",
+      "ocr_edited_filled": "OCR result edited",
+      "scan_source_title": "Plate image source",
+      "scan_source_subtitle": "Choose live capture for stronger evidence, or select a clear gallery photo.",
+      "scan_from_camera": "Live camera capture",
+      "scan_from_camera_hint": "Best for insurance and police as it records the capture time during the report.",
+      "scan_from_gallery": "Select from gallery",
+      "scan_from_gallery_hint": "Use a close-up, clear image of the vehicle plate."
+    },
+    "details": {
+      "title": "Additional details",
+      "helper": "Write a short factual description that helps explain the accident without exaggeration or judgment.",
+      "notes_hint": "Enter a short description of the accident circumstances, movement direction, and party condition without exaggeration or judgment."
+    },
+    "signals": {
+      "title": "Report signals",
+      "subtitle": "Review-supporting data including GPS accuracy and available GPS speed at capture time.",
+      "accuracy": "GPS accuracy",
+      "speed": "Device speed",
+      "unavailable": "Unavailable",
+      "speed_value": "{speed} km/h",
+      "neutral_note": "These signals do not prove liability or judge the accident. They only help with report review when needed."
+    },
+    "review": {
+      "title": "Review before saving",
+      "subtitle": "Review the required information before creating the report.",
+      "damage": "Damage location",
+      "fault": "Liability estimate",
+      "my_plate": "My plate",
+      "other_plate": "Other party plate",
+      "location": "Location",
+      "not_ready": "Not ready",
+      "optional_empty": "Not entered",
+      "evidence": "Evidence",
+      "evidence_empty": "No evidence attached",
+      "evidence_count": "{count} evidence item(s) attached",
+      "driver_license": "Driver's licence"
+    },
+    "evidence": {
+      "title": "Accident Evidence",
+      "count": "{count} evidence item attached",
+      "ready_to_capture": "Ready to add accident evidence",
+      "ready_description": "You can upload photos, videos, audio notes, or witness statements and attach them to the accident report.",
+      "uploaded_description": "Evidence has been attached to the accident report and will be saved with the case data.",
+      "capture_not_enabled": "Evidence documentation is not enabled yet",
+      "draft_ready": "Report file is ready to receive evidence",
+      "description": "Photos, videos, audio recordings, and witness statements can be attached to the accident report when documentation is enabled.",
+      "draft_description": "A secure report file has been prepared inside Guardian 360, and any future evidence will be attached to this report.",
+      "capture_pending_note": "Evidence capture will be enabled in the next phase after connecting camera and file upload.",
+      "types": {
+        "images": "Photos",
+        "videos": "Video",
+        "audio": "Audio",
+        "witnesses": "Witnesses",
+        "files": "File"
+      },
+      "actions": {
+        "add": "Add evidence",
+        "uploading": "Uploading evidence...",
+        "disabled": "Adding evidence is disabled",
+        "prepare": "Prepare report file",
+        "preparing": "Preparing...",
+        "ready": "Report file ready",
+        "camera": "Live capture",
+        "camera_hint": "Open the camera to document a live piece of evidence linked to the accident.",
+        "gallery": "Select from gallery",
+        "gallery_hint": "Select a saved photo or video if available.",
+        "files": "Add evidence file",
+        "files_hint": "Select a photo, video, or audio recording from the device.",
+        "add_to_report": "Add evidence to report",
+        "select_first": "Select an item first",
+        "clear_selection": "Clear selection"
+      },
+      "audit_hint": "Each evidence item is linked to its capture time, source, accident location, and available speed to support review and reduce tampering.",
+      "source_title": "Add accident evidence",
+      "source_subtitle": "Choose how to document the evidence. Live capture gives stronger weight to the report.",
+      "video_source_title": "Add accident video",
+      "video_source_subtitle": "You can record a live video or select a saved one to support the accident report.",
+      "witness": {
+        "title": "Add witness statement",
+        "name": "Witness name (optional)",
+        "phone": "Phone number (optional)",
+        "statement": "Statement or observation"
+      },
+      "pending_title": "Evidence ready to add",
+      "pending_description": "Review the selected evidence then tap Add evidence to attach it to the accident report.",
+      "sources": {
+        "camera": "Live capture",
+        "gallery": "From gallery",
+        "file": "File from device",
+        "unknown": "Unknown source"
+      }
+    },
+    "actions": {
+      "submit": "Create Smart Accident Report",
+      "submitting": "Creating report...",
+      "preparing_report": "Preparing report file...",
+      "refresh_location": "Refresh location",
+      "retry_location": "Retry",
+      "open_settings": "Location settings",
+      "back_home": "Back to Home",
+      "generating_pdf": "Generating PDF file..."
+    },
+    "success": {
+      "title": "Accident report saved",
+      "subtitle": "An internal Guardian 360 report has been created with a reference number. You can use it for review or sharing when needed.",
+      "reference_label": "Guardian 360 internal reference",
+      "location_label": "Recorded location"
+    },
+    "errors": {
+      "invalid_damage_point": "Invalid damage location.",
+      "invalid_fault_status": "Invalid liability estimate.",
+      "location_unavailable": "Could not detect a real device location. Check GPS and permissions.",
+      "location_required": "A real location is required before saving the Kroka report.",
+      "user_not_signed_in": "You must be signed in before creating the report.",
+      "damage_required": "Please select the damage location on the vehicle.",
+      "fault_required": "Please choose a liability estimate.",
+      "plate_required": "Please enter the plate code and number.",
+      "plate_digits_only": "Plate code and number must contain digits only.",
+      "invalid_plate_code": "Plate code must be a number from 0 to 99.",
+      "invalid_plate_number": "Plate number must be a number from 1 to 99999.",
+      "invalid_vehicle_plate": "Vehicle plate details are invalid.",
+      "duplicate_vehicle_plate": "The other vehicle plate cannot match your vehicle plate.",
+      "notes_too_long": "Notes are too long. Maximum length is 500 characters.",
+      "submit_failed": "Could not save the Kroka report. Check connection and Firebase permissions.",
+      "evidence_capture_not_configured": "Adding accident evidence is not enabled yet.",
+      "invalid_evidence": "Evidence data is invalid.",
+      "evidence_not_found": "The requested evidence item was not found.",
+      "report_not_submitted": "Save the accident report before updating evidence.",
+      "evidence_update_failed": "Could not update report evidence. Check your connection and try again.",
+      "not_allowed": "You are not authorized to perform this action.",
+      "draft_create_failed": "Could not prepare the report file. Check your connection and try again.",
+      "draft_discard_failed": "Could not discard the report draft.",
+      "draft_operation_failed": "Could not complete the draft operation.",
+      "draft_not_found": "Report draft was not found.",
+      "draft_not_editable": "This draft cannot be edited right now.",
+      "plate_ocr_failed": "Could not read the plate from the image. Try a clearer photo.",
+      "plate_ocr_unsupported_platform": "Plate scanning is currently supported on Android and iOS only.",
+      "plate_ocr_invalid_image": "Could not use the selected plate image. Choose a clear, supported format.",
+      "plate_ocr_no_text": "No clear text was found in the image.",
+      "plate_ocr_no_plate": "Image was read but no valid Jordanian plate number could be extracted.",
+      "license_scan_failed": "Could not read the driving licence. Try a clearer photo.",
+      "license_scan_required": "You must photograph or select the licence first before confirming.",
+      "license_scan_invalid_image": "Licence image is invalid or unclear.",
+      "license_scan_no_text": "No clear text was found in the licence image.",
+      "license_scan_no_data": "Image was read but not enough licence data could be extracted.",
+      "license_scan_unsupported_platform": "Licence reading is currently supported on Android and iOS devices only.",
+      "pdf_generation_failed": "Report saved, but PDF could not be generated right now. Check your connection and try again later.",
+      "evidence_selection_required": "Select an evidence item before adding it to the report."
+    },
+    "license": {
+      "title": "Driver's licence documentation",
+      "helper": "Links the report to the reporting driver's data and supports police and insurance review without constituting a legal ruling.",
+      "my_driver": "My licence",
+      "recommended": "Increases credibility",
+      "scan_camera": "Photograph licence",
+      "scan_gallery": "Select from gallery",
+      "confirm": "Confirm data",
+      "skip": "Not now",
+      "source": {
+        "camera": "Live capture",
+        "gallery": "From gallery",
+        "edited": "Edited after reading"
+      },
+      "status": {
+        "not_provided": "Not documented",
+        "verified": "Documented",
+        "pending_review": "Awaiting confirmation",
+        "skipped": "Not documented",
+        "refused": "Not documented"
+      },
+      "fields": {
+        "driver_name": "Driver name",
+        "national_id": "ID number",
+        "license_number": "Licence number",
+        "license_class": "Licence class",
+        "expiry_date": "Expiry date"
+      },
+      "messages": {
+        "scan_success": "Licence data extracted successfully. Please review before confirming.",
+        "scan_failed": "Could not read the licence data clearly. Try a clearer photo.",
+        "skipped": "Licence documentation was skipped.",
+        "refused": "The other party's refusal to document their licence has been recorded."
+      },
+      "compact_hint": "",
+      "sheet_title": "Driver's licence documentation",
+      "sheet_subtitle": "Photograph your licence or choose a clear image to extract data and link it to the accident report.",
+      "summary_verified": "Licence data has been linked to the report.",
+      "summary_pending": "Data read. Awaiting confirmation.",
+      "scan_camera_hint": "Open the camera and take a clear photo of the licence.",
+      "scan_gallery_hint": "Select a clear saved image from the device.",
+      "confirm_hint": "Confirm the extracted data and link it to the report."
+    },
+    "report": {
+      "pdf_status": "PDF Report",
+      "generating": "Generating official report...",
+      "pdf_pending": "Report saved, but the PDF is not ready yet. You can retry later.",
+      "pdf_ready": "Official PDF report is ready",
+      "pdf_ready_description": "The Smart Kroka report has been generated and securely uploaded. It contains accident data, evidence, licences, and key signals.",
+      "open_pdf": "Open report"
+    }
+  },
+  "signup": {
+    "title": "Create New Account",
+    "subtitle": "Create your account to keep Guardian 360 ready for emergencies",
+    "full_name": "Full name",
+    "phone": "Phone number",
+    "email": "Email address",
+    "password": "Password",
+    "confirm_password": "Confirm password",
+    "btn_create": "Create Account",
+    "have_account": "Already have an account?",
+    "login": "Login",
+    "password_note": "Must be at least 8 characters, including uppercase, lowercase, number, and special character.",
+    "hints": {
+      "full_name": "Enter your full name",
+      "phone": "Enter your phone number",
+      "email": "Enter your email address",
+      "password": "••••••••"
+    },
+    "success": {
+      "account_ready": "Account created successfully! Verifying now..."
+    },
+    "errors": {
+      "required_fields": "Please fill in all fields",
+      "invalid_name": "Please enter a valid full name",
+      "invalid_phone": "Please enter a valid phone number",
+      "profile_setup_failed": "Failed to prepare the medical profile. Please try again later.",
+      "invalid_email": "Please enter a valid email address",
+      "weak_password": "Password is too weak",
+      "passwords_do_not_match": "Passwords do not match",
+      "email_in_use": "This email is already in use. Sign in or use another email address."
+    }
+  },
+  "login": {
+    "title": "Login",
+    "subtitle": "Welcome back",
+    "subtitle_detail": "Sign in to your operations room",
+    "email": "Email Address",
+    "password": "Password",
+    "btn_login": "Login",
+    "forgot_password": "Forgot password?",
+    "no_account": "Don't have an account?",
+    "signup": "Sign Up",
+    "or_continue": "Or continue with",
+    "hints": {
+      "email": "Enter your email address",
+      "password": "••••••••"
+    },
+    "forgot_password_title": "Forgot password",
+    "forgot_password_desc": "Enter your email address to receive a reset link",
+    "btn_send_link": "Send link",
+    "success_reset_link": "A password reset link has been sent to your email",
+    "errors": {
+      "required_fields": "Please enter your email address and password",
+      "invalid_credentials": "Email or password is incorrect",
+      "too_many_attempts": "Sign-in has been temporarily blocked due to too many failed attempts",
+      "google_failed": "Could not sign in with Google. Check your connection and try again."
+    }
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "next": "Next",
+    "start": "Start",
+    "start_now": "Get Started",
+    "grant_permission": "Allow Permission",
+    "slides": {
+      "smart_guardian": {
+        "title": "Smart Advanced Guardian",
+        "description": "A personal safety system that brings emergencies, location, medical records, and rescue contacts together in one secure and fast experience."
+      },
+      "emergency_response": {
+        "title": "Immediate Emergency Response",
+        "description": "An early warning system designed to help you respond quickly when danger occurs."
+      },
+      "health_awareness": {
+        "title": "Integrated Emergency Protection",
+        "description": "Guardian 360 helps you manage medical information, share your location, alert emergency contacts, and reach nearby facilities when needed."
+      }
+    },
+    "permissions": {
+      "location_title": "Location Access",
+      "location_desc": "We need your location to accurately dispatch rescue teams during an emergency.",
+      "bg_location_title": "Background Location",
+      "bg_location_desc": "We track your location even when the app is closed to help keep you protected.",
+      "notifications_title": "Critical Alerts",
+      "notifications_desc": "Notifications are required to alert you immediately if potential danger is detected.",
+      "battery_title": "Background Protection",
+      "battery_desc": "We need to run continuously in the background so your protection system remains active."
+    },
+    "permission_items": {
+      "location": "GPS Location",
+      "location_reason": "To send your exact location to rescue teams immediately",
+      "bg_location": "Background Location",
+      "bg_location_reason": "To protect you even when the app is closed",
+      "notifications": "Critical Notifications",
+      "notifications_reason": "To alert you at maximum volume in emergencies",
+      "battery": "Ignore Battery Optimization",
+      "battery_reason": "To ensure the system runs without interruption"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "edit": "Edit Profile",
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "logout": "Logout",
+    "back": "Back",
+    "edit_tooltip": "Edit Basic Info",
+    "personal_info": "Personal Information",
+    "personal_info_desc": "Ensure this info is updated, especially your phone number, so emergency services can contact you if needed.",
+    "full_name": "Full Name",
+    "phone_number": "Phone Number",
+    "medical_readiness": "Medical Readiness & Protection",
+    "medical_desc": "These cards are linked to the rescue system and cannot be edited from the profile.",
+    "hints": {
+      "medical": "Completing your medical record helps the system send your blood type, allergies, medications, and chronic diseases to rescue teams in case of an accident.",
+      "contacts": "Adding at least one emergency contact makes the response more effective when we need to reach your family or a trusted person."
+    },
+    "edit_sheet": {
+      "title": "Update Basic Info",
+      "desc": "You can only edit your name and phone number. Your email is linked to your login account and cannot be changed here.",
+      "name_hint": "Enter your real name",
+      "phone_hint": "Enter a phone number where you can be reached in emergencies",
+      "phone_helper": "Make sure you enter a valid, up-to-date number so emergency services can reach you when needed.",
+      "email_hint": "Email linked to your account",
+      "email_helper": "Your email cannot be edited from this screen because it is linked to your login account. To change it, please use the account settings or contact support."
+    },
+    "fallbacks": {
+      "user": "Guardian User",
+      "not_entered": "Not entered",
+      "unavailable": "Unavailable"
+    },
+    "status": {
+      "account_ready": "Account ready for protection and response",
+      "medical_complete": "Medical record complete",
+      "medical_incomplete": "Medical record not complete yet",
+      "medical_title_complete": "Medical record complete",
+      "medical_title_required": "Medical record required",
+      "medical_subtitle_complete": "Emergency data is ready to send during an accident",
+      "medical_subtitle_required": "Complete the medical record so rescue teams receive critical information",
+      "contacts_title_complete": "Emergency contacts ready",
+      "contacts_title_required": "Emergency contacts incomplete",
+      "contacts_subtitle_complete": "The system can use your contacts when needed",
+      "contacts_subtitle_required": "Add at least one emergency contact"
+    },
+    "validation": {
+      "name_too_short": "Please enter a real name with at least 3 characters.",
+      "name_has_digits": "Name must not contain numbers.",
+      "invalid_phone_example": "Invalid phone number. Use 0791234567 or +962791234567.",
+      "invalid_phone": "Invalid phone number.",
+      "invalid_email": "Invalid email format."
+    },
+    "errors": {
+      "load_timeout": "Could not load profile data because the connection is slow.",
+      "load_failed": "Could not load profile data.",
+      "cloud_update_failed_local_saved": "Saved locally, but cloud update failed.",
+      "save_timeout": "Saving timed out. Check your connection and try again.",
+      "save_failed": "Could not save profile data."
+    },
+    "messages": {
+      "save_success": "Profile data saved successfully."
+    },
+    "actions": {
+      "saving": "Saving...",
+      "save_changes": "Save Changes"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "logout": "Logout",
+    "sections": {
+      "account": "Account & Security",
+      "safety": "Emergency & Safety",
+      "detection": "Detection & Sensitivity",
+      "devices": "Connected Devices",
+      "app": "Application Settings",
+      "help": "Help & Support"
+    },
+    "account": {
+      "profile_title": "Verified Profile",
+      "profile_subtitle": "Your account is verified and secure",
+      "biometric_title": "Biometric Authentication",
+      "biometric_subtitle": "Use fingerprint or face recognition",
+      "password_title": "Change Password",
+      "password_subtitle": "Update your account password"
+    },
+    "safety": {
+      "location_title": "Live Location Sharing",
+      "location_subtitle": "Share your location with emergency contacts",
+      "shake_title": "Shake to SOS",
+      "shake_subtitle": "Activate emergency by shaking device",
+      "battery_title": "Low Battery Alert",
+      "battery_subtitle": "Notify contacts when battery is low"
+    },
+    "detection": {
+      "sensitivity_title": "Accident Detection Sensitivity",
+      "sensitivity_low": "Low Sensitivity",
+      "sensitivity_medium": "Medium Sensitivity",
+      "sensitivity_high": "High Sensitivity",
+      "sensitivity_very_high": "Very High Sensitivity",
+      "sensitivity_note": "Higher sensitivity detects minor impacts but may trigger false alarms"
+    },
+    "devices": {
+      "connection_title": "Smart Device Connection",
+      "connection_subtitle": "Connect your IoT devices",
+      "connected": "Connected",
+      "manage": "Manage"
+    },
+    "app": {
+      "voice_title": "Voice Feedback",
+      "voice_subtitle": "Enable voice notifications and alerts",
+      "language_title": "Language",
+      "language_subtitle": "Change application language"
+    },
+    "logout_dialog": {
+      "title": "Confirm Logout",
+      "message": "Are you sure you want to logout from your account?",
+      "cancel": "Cancel",
+      "confirm": "Logout",
+      "signing_out": "Signing out..."
+    },
+    "help": {
+      "faq_title": "Frequently Asked Questions",
+      "faq_subtitle": "Answers to the most common questions",
+      "faq_body": "Coming soon: an FAQ section covering:\n\n• How to use the emergency system\n• Sensitivity and detection settings\n• Connecting smart devices\n• Managing emergency contacts\n• And other important topics",
+      "support_title": "Contact Us",
+      "support_subtitle": "Get technical support",
+      "support_body": "For technical support, contact us via:\n\n📧 Email:\nsupport@guardian360.com\n\n📞 Phone:\n+962 6 XXX XXXX\n\nWe're here to help around the clock.",
+      "about_title": "About the App",
+      "about_subtitle": "Information about Guardian 360",
+      "about_body": "An integrated smart protection system providing:\n\n• Automatic accident detection\n• Advanced emergency system\n• Live location tracking\n• AI-powered smart assistant\n• Smart device integration\n\n© 2026 VitaLink System\nAll rights reserved",
+      "ok": "OK"
+    },
+    "password_dialog": {
+      "title": "Change Password",
+      "body": "This feature will be available soon. You can change your password through account settings.",
+      "ok": "OK"
+    },
+    "version": {
+      "label": "Version 1.0.0 (Secure Beta)",
+      "copyright": "© 2026 VitaLink System"
+    },
+    "messages": {
+      "saved": "Settings saved successfully",
+      "failed": "Failed to save settings"
+    },
+    "sensitivity": {
+      "low": "Low (rough roads, fewer false alerts)",
+      "medium": "Medium (recommended for daily driving)",
+      "high": "Very high (detects minor vibrations and may cause false alerts)"
+    }
+  },
+  "contacts": {
+    "sync": {
+      "pending": "Waiting for cloud sync"
+    },
+    "title": "Emergency Contacts",
+    "add": "Add Contact",
+    "edit": "Edit Contact",
+    "delete": "Delete Contact",
+    "empty": "No emergency contacts",
+    "primary": "Primary Rescuer",
+    "backup": "Backup Rescuer",
+    "actions": {
+      "refresh": "Refresh",
+      "add_rescuer": "Add Rescuer",
+      "options": "Options",
+      "make_primary": "Set as primary rescuer",
+      "move_up": "Move priority up",
+      "move_down": "Move priority down",
+      "delete_contact": "Delete emergency contact",
+      "importing": "Opening contacts...",
+      "import_from_phone": "Import from phone contacts",
+      "saving": "Saving...",
+      "save_rescuer": "Save and approve rescuer"
+    },
+    "max_dialog": {
+      "title": "Maximum reached",
+      "body": "You can add up to {max} emergency contacts. Delete an old contact or reorder priorities."
+    },
+    "readiness": {
+      "local_saved_title": "Emergency contacts saved locally",
+      "pending_sync_title": "Waiting for sync",
+      "ready_title": "Emergency contacts ready",
+      "incomplete_title": "Emergency contacts incomplete",
+      "pending_sync_subtitle": "Cloud data will update automatically when a suitable connection is available.",
+      "ready_subtitle": "These contacts will be attached to emergency reports by priority.",
+      "incomplete_subtitle": "Add at least one trusted contact to support emergency response."
+    },
+    "count_label": "{count} of {max} emergency contacts",
+    "delete_dialog": {
+      "title": "Delete emergency contact?",
+      "body": "Do you want to delete {name} from emergency contacts? Priorities will update automatically."
+    },
+    "empty_state": {
+      "title": "No emergency contacts yet",
+      "body": "Add a trusted person so their data can be attached to SOS and accident reports when needed."
+    },
+    "sheet": {
+      "title": "Add Emergency Contact",
+      "description": "Add a trusted contact to be used in emergency reports by priority."
+    },
+    "fields": {
+      "name": {
+        "label": "Emergency contact name",
+        "hint": "Emergency contact name",
+        "helper": "Use a clear name that is easy to identify during emergencies."
+      },
+      "phone": {
+        "label": "Phone number",
+        "hint": "Active emergency phone number",
+        "helper": "This number may be used for emergency alerts and reports when needed."
+      },
+      "relation": {
+        "label": "Select relationship"
+      }
+    },
+    "relations": {
+      "father": "Father",
+      "mother": "Mother",
+      "brother": "Brother",
+      "sister": "Sister",
+      "spouse": "Spouse",
+      "son": "Son",
+      "daughter": "Daughter",
+      "friend": "Friend",
+      "colleague": "Colleague",
+      "other": "Other"
+    },
+    "contact_method": {
+      "auto_sms": "Emergency alert recipient"
+    },
+    "messages": {
+      "added": "Emergency contact added.",
+      "added_success": "Emergency contact added successfully",
+      "deleted": "Emergency contact deleted.",
+      "deleted_named": "{name} was deleted from emergency contacts",
+      "updated": "Emergency contact updated.",
+      "primary_updated": "Primary emergency contact updated.",
+      "order_updated": "Emergency contact order updated.",
+      "imported_review": "Contact imported. Review the data, then save.",
+      "local_saved_pending_sync": "Saved on this device. Cloud data will update later."
+    },
+    "errors": {
+      "login_required_manage": "Please sign in to manage emergency contacts.",
+      "load_failed": "Could not load emergency contacts.",
+      "load_unavailable": "Emergency contacts are unavailable right now.",
+      "max_reached": "Maximum emergency contacts reached.",
+      "not_found": "Contact not found.",
+      "contacts_permission_denied": "Allow contacts access or enter the number manually.",
+      "import_read_failed": "Could not read the selected contact.",
+      "import_phone_required": "Name imported. Please enter a valid phone number.",
+      "import_data_failed": "Could not read contact data.",
+      "import_failed": "Could not import contact.",
+      "save_failed": "Could not save emergency contact.",
+      "login_required_sync": "Please sign in to sync emergency contacts."
+    },
+    "validation": {
+      "review_phone": "Please review the phone number.",
+      "name_required": "Please enter the emergency contact name.",
+      "name_too_short": "Emergency contact name is too short.",
+      "name_has_digits": "Name must not contain numbers.",
+      "invalid_phone": "Invalid phone number.",
+      "duplicate_phone": "This contact is already added.",
+      "invalid_relation": "Please choose a valid relation."
+    }
+  },
+  "sos": {
+    "debug_voice_simulation": "Voice Command Simulator",
+    "title": "Emergency System",
+    "countdown": "Final seconds before sending alert...",
+    "triggered": "Emergency system activated",
+    "cancelled": "Emergency cancelled successfully",
+    "alert_sent": "Emergency report sent successfully to rescue teams",
+    "are_you_ok": "Are you okay?",
+    "btn_im_safe": "I'm Safe",
+    "btn_need_help": "I Need Help",
+    "voice": {
+      "opening_manual": "Emergency countdown started. You can cancel it if you are safe.",
+      "opening_auto": "A possible accident was detected. You can cancel the alert if you are safe."
+    },
+    "protocol_title": "Emergency Protocol",
+    "hint_monitoring": "System is in monitoring mode. No alert will be sent unless emergency is triggered.",
+    "hint_counting_down": "If you are safe, press Cancel Emergency before the countdown ends.",
+    "hint_sending": "Please do not close the app while sending the alert.",
+    "hint_sent": "Alert sent. Stay in a safe place if possible.",
+    "hint_cancelled": "Alert cancelled and returned to safe mode.",
+    "hint_error": "Could not complete the action. Check connection and permissions.",
+    "hint_evaluating": "Current situation is being evaluated.",
+    "hint_calling": "Preparing emergency contact call.",
+    "severity_analysis": "Current Event Analysis",
+    "monitoring_mode": "Monitoring Mode",
+    "chip_severity": "Severity",
+    "chip_score": "Score",
+    "chip_impact": "Impact",
+    "chip_rotation": "Rotation",
+    "cancel_emergency": "Cancel Emergency",
+    "back_after_sent": "Return After Sending",
+    "back_to_previous": "Return to Previous Screen",
+    "semantics_back": "Go back",
+    "semantics_cancel": "Cancel Emergency",
+    "status_monitoring": "Protection system connected and monitoring your surroundings...",
+    "status_countdown_critical": "Critical accident! An SOS alert will be sent automatically.",
+    "status_countdown_high": "Serious possible accident. Cancel the alert if you are safe.",
+    "status_countdown_medium": "Possible accident. Confirm you are safe to cancel.",
+    "status_countdown_low": "Minor event under evaluation. You can cancel if you are safe.",
+    "status_countdown_default": "Current event is being verified.",
+    "status_manual_sos_active": "Manual SOS activated. You can cancel if you are safe.",
+    "status_fallback_event": "Emergency event received. Cancel the alert if you are safe.",
+    "status_cancelled": "Emergency cancelled successfully.",
+    "status_sent_online": "Report sent successfully to rescue teams.",
+    "status_sent_offline": "Report saved locally. Will be sent when connection is restored.",
+    "status_offline_failed": "Failed to save the report. Please try again.",
+    "status_error_no_user": "Cannot send report: user not signed in.",
+    "status_error_no_location": "Could not determine current location. Report not sent.",
+    "status_error_timeout": "Operation timed out. Please try again.",
+    "status_error_generic": "An error occurred while processing the report.",
+    "status_opening_call": "The phone app will open to call your emergency contact.",
+    "ai_opening_call": "Opening call...",
+    "call_opening_description": "The phone app will open in a moment.",
+    "call_contact_label": "Contact",
+    "call_contact_fallback": "Emergency Contact",
+    "status_sending_locating": "Determining your current location precisely...",
+    "status_sending_uploading": "Sending report to the database...",
+    "ai_monitoring": "All clear. Trip is being monitored.",
+    "ai_countdown_critical": "Critical accident detected. Cancel immediately if you are safe or give a voice command.",
+    "ai_countdown_high": "Serious accident detected. Cancel the alert now if you are safe.",
+    "ai_countdown_medium": "Are you okay? If you do not respond, the report will be sent.",
+    "ai_countdown_low": "Unusual movement detected. Please confirm your safety.",
+    "ai_countdown_default": "System is reviewing the current situation.",
+    "ai_manual_sos": "Emergency countdown started for a manual SOS report.",
+    "ai_fallback_event": "Cancel the alert before the countdown ends if you are safe.",
+    "ai_cancelled": "Thank goodness you are safe.",
+    "ai_sent": "Your location and incident data were sent successfully.",
+    "ai_sending": "The report is being prepared and sent.",
+    "ai_error_no_user": "Could not access the user session.",
+    "ai_error_no_location": "Failed to get location.",
+    "ai_error_timeout": "Could not complete the operation in time.",
+    "ai_error_generic": "Could not complete the sending process.",
+    "ai_calling": "Call command received.",
+    "ai_offline_sent": "Incident data saved locally for later sending.",
+    "ai_offline_failed": "Could not save the report at this time.",
+    "severity_none": "None",
+    "severity_manual": "Manual SOS",
+    "severity_possible_accident": "Possible Accident",
+    "severity_manual_critical": "Critical Manual SOS",
+    "severity_unspecified": "Unspecified",
+    "countdown_label_listening": "Awaiting your voice confirmation",
+    "countdown_label_counting": "seconds remaining",
+    "status_calling": "Redirecting action to emergency contact...",
+    "call_sheet_title": "Call Emergency Contact",
+    "call_sheet_description": "The phone app will open to call your highest-priority emergency contact.",
+    "call_sheet_open": "Open Call",
+    "call_sheet_cancel": "Cancel",
+    "call_sheet_no_contact": "No emergency contact is available.",
+    "call_sheet_unknown_contact": "Emergency Contact",
+    "call_loading_title": "Opening Call...",
+    "call_loading_description": "The phone app will open to call your emergency contact.",
+    "call_loading_contact_label": "Emergency Contact",
+    "call_loading_phone_label": "Phone Number"
+  },
+  "map": {
+    "title": "Map",
+    "current_location": "Your current location",
+    "fetching_location": "Determining your current location accurately...",
+    "location_success": "Location determined successfully",
+    "location_failed": "Failed to determine current location",
+    "locating": "Scanning the area...",
+    "safe_zone_active": "Active safety radius (5 km)",
+    "searching_places": "Searching for emergency services...",
+    "no_places": "No emergency centers found within 5 km",
+    "place_types": {
+      "hospital": "Hospital",
+      "clinic": "Health center",
+      "security": "Police station",
+      "pharmacy": "Pharmacy",
+      "fire_station": "Fire station",
+      "other": "Other"
+    }
+  },
+  "ai": {
+    "title": "Guardian AI",
+    "welcome": "Hello! I'm your smart assistant in Guardian 360",
+    "listening": "Listening...",
+    "status_thinking": "Analyzing Situation",
+    "status_ready": "Ready to Help",
+    "empty_subtitle": "Type or speak clearly about the situation, and I will arrange safe steps quickly and calmly.",
+    "quick_first_aid_title": "Offline Quick First Aid",
+    "serious_emergency_advice": "In case of unconsciousness, difficulty breathing, severe bleeding, chest pain, fire, or critical injury: Contact local emergency immediately.",
+    "input_listening_hint": "Listening now... describe the situation clearly",
+    "input_hint": "Describe the situation or ask a question here...",
+    "error": "Sorry, an error occurred while connecting to secure servers.",
+    "emergency_detected": "⚠️ Security alert: A critical phrase was detected. Redirecting to the SOS emergency system now.",
+    "empty_title": "Guardian AI",
+    "ask_anything": "You can start with a short question about the situation:",
+    "emergency_disclaimer": "Quick guidance is available locally. In immediate danger, use SOS or contact local emergency services.",
+    "emergency_explicit_detected": "Explicit emergency request detected. Opening SOS now; you can go back if this was accidental.",
+    "messages": {
+      "write_question": "Write the situation clearly and I will help with safe steps.",
+      "no_suitable_reply": "No clear reply was received. Add the main details: what happened, is the person conscious, and are they breathing?",
+      "login_required": "Please sign in first to use Guardian AI safely.",
+      "invalid_question": "The question is unclear or too long. Briefly write the most important details.",
+      "too_many_requests": "Too many requests were sent in a short time. Wait a little, then try again.",
+      "server_not_ready": "Guardian AI is not ready right now. Try again later.",
+      "secure_server_error": "Could not reach Guardian AI right now. Use quick first-aid guidance or SOS if the situation is serious.",
+      "unexpected_error": "An unexpected error occurred. Use quick first-aid guidance or try again."
+    },
+    "voice": {
+      "unavailable": "Voice input is not available on this device. You can type your question manually.",
+      "microphone_permission_denied": "Microphone permission was not granted. Enable it from app settings or type manually.",
+      "start_failed": "Could not start listening. Check the microphone and try again.",
+      "listening_error": "An error occurred while listening. Try again or type manually.",
+      "no_clear_speech": "I could not capture clear speech. Move closer to the microphone or type manually.",
+      "tone_elevated": "Strong voice signal",
+      "tone_clear": "Clear voice signal",
+      "tone_low": "Low voice signal",
+      "tone_idle": "Waiting for sound"
+    },
+    "quick_questions": {
+      "unconscious": "A person is unconscious but breathing. What should I do?",
+      "bleeding": "Severe arm bleeding will not stop. What are the steps?",
+      "burn": "A hot water burn. What should I do now?",
+      "sos": "Start emergency"
+    },
+    "first_aid": {
+      "bleeding": {
+        "title": "Severe bleeding",
+        "short_title": "Bleeding",
+        "summary": "Stop bleeding with direct pressure and watch for shock until help arrives.",
+        "steps": {
+          "0": {
+            "title": "Secure the area first",
+            "description": "Approach only if the scene is safe. Call emergency services now — severe bleeding requires immediate help."
+          },
+          "1": {
+            "title": "Apply direct pressure",
+            "description": "Place clean gauze or cloth over the wound and press firmly without checking repeatedly."
+          },
+          "2": {
+            "title": "Add layers without removing the first",
+            "description": "If blood soaks through, add another clean layer and keep pressure."
+          },
+          "3": {
+            "title": "Do not remove embedded objects",
+            "description": "Press around the object and stabilize it until help arrives."
+          },
+          "4": {
+            "title": "Watch for shock",
+            "description": "Keep the person lying down if possible, warm them, and seek urgent help for paleness, cold sweat, dizziness, or confusion."
+          }
+        }
+      },
+      "unconscious": {
+        "title": "Unconscious but breathing",
+        "short_title": "Unconscious",
+        "summary": "Check breathing, protect the airway, and do not give anything by mouth.",
+        "steps": {
+          "0": {
+            "title": "Check response",
+            "description": "Call the person clearly and tap their shoulder gently. Do not shake them hard."
+          },
+          "1": {
+            "title": "Check breathing quickly",
+            "description": "Look, listen, and feel for breathing for no more than 10 seconds."
+          },
+          "2": {
+            "title": "Keep the airway open",
+            "description": "If breathing is present, monitor continuously and avoid moving the neck or back if injury is possible."
+          },
+          "3": {
+            "title": "Use recovery position when safe",
+            "description": "If no neck or back injury is suspected, place them on their side to help keep the airway open."
+          },
+          "4": {
+            "title": "Give nothing by mouth",
+            "description": "Do not give water, food, or medicine. Call emergency services immediately and stay with them until help arrives."
+          }
+        }
+      },
+      "fracture": {
+        "title": "Fractures and bone injuries",
+        "short_title": "Fracture",
+        "summary": "Immobilize the injury, reduce movement, and monitor feeling and circulation.",
+        "steps": {
+          "0": {
+            "title": "Do not move the injury",
+            "description": "Ask the person not to move the injured limb or area."
+          },
+          "1": {
+            "title": "Support gently",
+            "description": "Stabilize the area in a comfortable position using cloth, padding, or a temporary splint if available."
+          },
+          "2": {
+            "title": "Cover open wounds",
+            "description": "Cover bleeding or exposed bone with a clean dressing without pressing on exposed bone."
+          },
+          "3": {
+            "title": "Use a cold pack",
+            "description": "If the skin is unbroken, apply a wrapped cold pack near (not on) the injury to reduce pain and swelling. Never place ice on bare skin or near open wounds."
+          },
+          "4": {
+            "title": "Watch danger signs",
+            "description": "Call emergency services for severe pain, deformity, numbness, bluish color, cold fingers, open bleeding, or any head, neck, or back injury — do not move the person."
+          }
+        }
+      },
+      "burns": {
+        "title": "Burns",
+        "short_title": "Burns",
+        "summary": "Cool the burn with running water, protect it from contamination, and avoid home remedies.",
+        "steps": {
+          "0": {
+            "title": "Stop the burning source",
+            "description": "Move the person away from heat, electricity, steam, or chemicals only when safe."
+          },
+          "1": {
+            "title": "Cool for 20 minutes",
+            "description": "Cool the burn under cool to lukewarm running water for about 20 minutes. Do not use cold or iced water."
+          },
+          "2": {
+            "title": "Remove tight items",
+            "description": "Remove rings, watches, or loose clothing before swelling begins. Do not remove anything stuck to skin."
+          },
+          "3": {
+            "title": "Cover gently",
+            "description": "Cover with a sterile non-stick dressing or clean cloth. Do not apply oils, toothpaste, butter, random creams, or herbs."
+          },
+          "4": {
+            "title": "Call emergency immediately for serious burns",
+            "description": "Call emergency services immediately for electrical, chemical, large, deep, facial, or burns to hands, feet, or sensitive areas — do not wait to finish first aid before calling."
+          }
+        }
+      },
+      "cpr": {
+        "title": "CPR",
+        "short_title": "CPR",
+        "summary": "Start chest compressions when the person is unresponsive and not breathing normally.",
+        "steps": {
+          "0": {
+            "title": "Check response and breathing",
+            "description": "Call and tap gently. If there is no response and no normal breathing, treat it as an emergency."
+          },
+          "1": {
+            "title": "Call emergency services and get AED",
+            "description": "Ask a specific person to call emergency services and bring an AED if available. If an AED arrives, turn it on immediately and follow its voice instructions."
+          },
+          "2": {
+            "title": "Start chest compressions",
+            "description": "Place the heel of your hand in the center of the chest. Push down firmly at least 5 cm (2 inches) at a rate of 100 to 120 compressions per minute."
+          },
+          "3": {
+            "title": "Allow chest recoil",
+            "description": "Let the chest return fully after each compression and minimize pauses."
+          },
+          "4": {
+            "title": "Continue until help arrives",
+            "description": "Continue until normal breathing returns, responders arrive, an AED takes over, or you cannot continue."
+          }
+        }
+      },
+      "choking": {
+        "title": "Choking",
+        "short_title": "Choking",
+        "summary": "Act quickly when the person cannot speak or breathe because the airway is blocked.",
+        "steps": {
+          "0": {
+            "title": "Assess coughing ability",
+            "description": "If the person can cough strongly or speak, encourage coughing and monitor."
+          },
+          "1": {
+            "title": "Start back blows",
+            "description": "If they cannot speak or breathe, lean them forward and give up to 5 firm back blows between the shoulder blades."
+          },
+          "2": {
+            "title": "Move to abdominal thrusts",
+            "description": "If the object does not come out, give up to 5 abdominal thrusts inward and upward for adults and children over one year. For pregnant persons, use chest thrusts instead (push inward on the center of the chest)."
+          },
+          "3": {
+            "title": "Repeat and call for help",
+            "description": "Alternate 5 back blows and 5 thrusts until breathing improves or help arrives."
+          },
+          "4": {
+            "title": "If unconscious",
+            "description": "Lower them carefully to a firm surface. Start chest compressions immediately — push hard and fast in the center of the chest. Do not sweep the mouth unless you can clearly see and remove the object."
+          }
+        }
+      }
+    }
+  },
+  "errors": {
+    "email_in_use": "This email is already in use.",
+    "invalid_email": "Please enter a valid email address.",
+    "email_required": "Email address is required.",
+    "weak_password": "Password is too weak.",
+    "password_required": "Password is required.",
+    "password_min_length": "Password must be at least 8 characters long.",
+    "password_needs_letter": "Password must contain at least one letter.",
+    "password_needs_number": "Password must contain at least one number.",
+    "password_needs_special": "Password must contain at least one special character (@$!%*?&#, etc.).",
+    "network_error": "No internet connection.",
+    "unknown": "An unexpected error occurred, please try again.",
+    "permission_denied": "Permission denied",
+    "location_disabled": "Location services (GPS) are disabled on your device",
+    "firebase": "Server connection error",
+    "timeout": "Connection timed out",
+    "user_not_logged_in": "User is not logged in",
+    "location_denied": "Location permission denied",
+    "unknown_map_error": "Could not prepare the map"
+  },
+  "email_verification": {
+    "title": "Verify Your Email",
+    "description": "We sent a verification link to your email. Open the link, then return to the app and tap Verified.",
+    "verified_button": "Verified",
+    "resend_button": "Resend Link",
+    "sent_success": "A verification link has been sent to your email.",
+    "not_verified_yet": "Your email is not verified yet. Open the link from your inbox, then try again.",
+    "resend_wait": "Please wait a little before resending the link.",
+    "error": "Something went wrong while checking your email verification. Please try again.",
+    "spam_note": "If you do not see the email, check your spam folder.",
+    "email_label": "Email",
+    "sign_out": "Sign out and go back"
+  },
+  "app": {
+    "tagline": "Your smart guardian on the road",
+    "version": "Version 1.0.0",
+    "copyright": "© 2026 VitaLink System"
+  },
+  "trip": {
+    "started": "Trip started successfully",
+    "ended": "Trip ended safely",
+    "active": "Trip active - radar running in the background",
+    "inactive": "No active trip",
+    "cancelled": "Trip cancelled",
+    "emergency": "Trip in emergency mode"
+  },
+  "accident": {
+    "detected": "Possible accident detected",
+    "analyzing": "Analyzing impact indicators...",
+    "critical": "Possible critical accident. An SOS alert will be sent automatically.",
+    "moderate": "Possible accident. Confirm you are safe to cancel sending.",
+    "ignored": "Event ignored because it does not look like a real accident.",
+    "false_positive": "False alert - ignored"
+  },
+  "location": {
+    "fetching": "Determining your current location accurately...",
+    "success": "Location determined successfully",
+    "failed": "Failed to determine current location",
+    "service_disabled": "Location services are disabled on your device",
+    "permission_denied": "Location access was denied",
+    "permission_denied_forever": "Location permission is permanently denied. Open settings to enable it."
+  },
+  "auth": {
+    "login_success": "Logged in successfully",
+    "login_failed": "Login failed",
+    "signup_success": "Account created successfully",
+    "signup_failed": "Account creation failed",
+    "logout_success": "Logged out successfully",
+    "email_invalid": "Invalid email format",
+    "password_weak": "Password is too weak",
+    "user_not_found": "User not found",
+    "wrong_password": "Incorrect password",
+    "email_already_in_use": "Email is already in use"
+  },
+  "system": {
+    "ready": "System ready",
+    "active": "System safe and active",
+    "initializing": "Initializing system",
+    "healthy": "All sensors are working efficiently",
+    "monitoring": "Protection system connected and monitoring your surroundings...",
+    "protection_enabled": "Protection enabled",
+    "protection_disabled": "System inactive"
+  },
+  "actions": {
+    "start_trip": "Start Trip",
+    "end_trip": "End Trip",
+    "im_safe": "I'm Safe",
+    "need_help": "I Need Help",
+    "call_emergency": "Call Emergency"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "no_data": "No data to display",
+    "loading": "Loading data..."
+  },
+  "labels": {
+    "name": "Name",
+    "phone": "Phone Number",
+    "email": "Email",
+    "password": "Password",
+    "blood_type": "Blood Type",
+    "weight": "Weight (kg)",
+    "height": "Height (cm)",
+    "diseases": "Chronic Diseases",
+    "medications": "Medications",
+    "allergies": "Allergies",
+    "notes": "Notes",
+    "destination": "Destination",
+    "duration": "Expected Duration",
+    "relation": "Relation"
+  },
+  "placeholders": {
+    "name": "Enter full name",
+    "phone": "Enter phone number",
+    "email": "example@guardian360.com",
+    "password": "••••••••",
+    "search": "Search...",
+    "message": "Write your message here..."
+  },
+  "units": {
+    "kilogram": "kg",
+    "centimeter": "cm",
+    "meter": "m",
+    "kilometer": "km",
+    "second": "second",
+    "minute": "minute",
+    "hour": "hour"
+  },
+  "status": {
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "success": "Operation completed successfully",
+    "failed": "Operation failed",
+    "pending": "Pending",
+    "completed": "Completed",
+    "cancelled": "Cancelled"
+  },
+  "severity": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "critical": "Critical"
+  }
+}
